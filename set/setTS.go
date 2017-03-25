@@ -1,6 +1,9 @@
 package set
 
-import "sync"
+import (
+	"github.com/khezen/items/collection"
+	"sync"
+)
 
 // setTS defines a thread safe set data structure.
 type setTS struct {
@@ -50,6 +53,12 @@ func (s *setTS) Has(items ...interface{}) bool {
 	return s.set.Has(items...)
 }
 
+func (s *setTS) Replace(item, substitute interface{}) {
+	s.l.Lock()
+	defer s.l.Unlock()
+	s.set.Replace(item, substitute)
+}
+
 // Len returns the number of items in a set.
 func (s *setTS) Len() int {
 	s.l.RLock()
@@ -65,7 +74,7 @@ func (s *setTS) Clear() {
 }
 
 // IsEqual test whether s and t are the same in size and have the same items.
-func (s *setTS) IsEqual(t Interface) bool {
+func (s *setTS) IsEqual(t collection.Interface) bool {
 	s.l.RLock()
 	defer s.l.RUnlock()
 	return s.set.IsEqual(t)
@@ -108,14 +117,14 @@ func (s *setTS) Copy() Interface {
 
 // Merge is like Union, however it modifies the current set it's applied on
 // with the given t set.
-func (s *setTS) Merge(t Interface) {
+func (s *setTS) Merge(t collection.Interface) {
 	s.l.Lock()
 	defer s.l.Unlock()
 	s.set.Merge(t)
 }
 
 // Retain removes the set items not containing in t from set s.
-func (s *setTS) Retain(t Interface) {
+func (s *setTS) Retain(t collection.Interface) {
 	s.l.Lock()
 	defer s.l.Unlock()
 	s.set.Retain(t)

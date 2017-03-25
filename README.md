@@ -86,24 +86,10 @@ set data structure.
 
 ```Golang
 type Interface interface {
-	Add(items ...interface{})
-	Remove(items ...interface{})
+	collection.Interface
 	Pop() interface{}
-	Has(items ...interface{}) bool
-	Each(func(interface{}) bool)
-
-	Len() int
-	Clear()
-	IsEmpty() bool
-	IsEqual(s Interface) bool
 	IsSubset(s Interface) bool
 	IsSuperset(s Interface) bool
-	Merge(s Interface)
-	Separate(s Interface)
-	Retain(s Interface)
-
-	String() string
-	Slice() []interface{}
 	Copy() Interface
 }
 ```

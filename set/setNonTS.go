@@ -2,6 +2,7 @@ package set
 
 import (
 	"fmt"
+	"github.com/khezen/items/collection"
 	"strings"
 )
 
@@ -63,6 +64,13 @@ func (s *set) Has(items ...interface{}) bool {
 	return has
 }
 
+func (s *set) Replace(item, substitute interface{}) {
+	if s.m[item] == keyExists {
+		delete(s.m, item)
+	}
+	s.m[substitute] = keyExists
+}
+
 // Len returns the number of items in a set.
 func (s *set) Len() int {
 	return len(s.m)
@@ -79,7 +87,7 @@ func (s *set) IsEmpty() bool {
 }
 
 // IsEqual test whether s and t are the same in size and have the same items.
-func (s *set) IsEqual(t Interface) bool {
+func (s *set) IsEqual(t collection.Interface) bool {
 	// Force locking only if given set is threadsafe.
 	if conv, ok := t.(*setTS); ok {
 		conv.l.RLock()
@@ -161,7 +169,7 @@ func (s *set) Slice() []interface{} {
 
 // Merge is like Union, however it modifies the current set it's applied on
 // with the given t set.
-func (s *set) Merge(t Interface) {
+func (s *set) Merge(t collection.Interface) {
 	t.Each(func(item interface{}) bool {
 		s.m[item] = keyExists
 		return true
@@ -170,12 +178,12 @@ func (s *set) Merge(t Interface) {
 
 // it's not the opposite of Merge.
 // Separate removes the set items containing in t from set s.
-func (s *set) Separate(t Interface) {
+func (s *set) Separate(t collection.Interface) {
 	s.Remove(t.Slice()...)
 }
 
 // Retain removes the set items not containing in t from set s.
-func (s *set) Retain(t Interface) {
+func (s *set) Retain(t collection.Interface) {
 	items := make(map[interface{}]struct{})
 	t.Each(func(item interface{}) bool {
 		if s.Has(item) {
@@ -184,4 +192,8 @@ func (s *set) Retain(t Interface) {
 		return true
 	})
 	s.m = items
+}
+
+func (s *set) CopyCollection() collection.Interface {
+	return s.Copy()
 }

@@ -1,6 +1,7 @@
 package set
 
 import (
+	"github.com/khezen/items/collection"
 	"reflect"
 	"testing"
 )
@@ -13,10 +14,7 @@ func TestUnion(t *testing.T) {
 	x := New()
 	x.Add("5", "6", "7")
 
-	u := Union(s, r, x)
-	if settype := reflect.TypeOf(u).String(); settype != "*set.setTS" {
-		t.Error("Union should derive its set type from the first passed set, got", settype)
-	}
+	u := collection.Union(s, r, x)
 	if u.Len() != 7 {
 		t.Error("Union: the merged set doesn't have all items in it.")
 	}
@@ -25,7 +23,7 @@ func TestUnion(t *testing.T) {
 		t.Error("Union: merged items are not availabile in the set.")
 	}
 
-	z := Union(x, r)
+	z := collection.Union(x, r)
 	if z.Len() != 5 {
 		t.Error("Union: Union of 2 sets doesn't have the proper number of items.")
 	}
@@ -43,7 +41,7 @@ func TestDifference(t *testing.T) {
 	x := New()
 	x.Add("5", "6", "7")
 
-	u := Difference(s, r, x)
+	u := collection.Difference(s, r, x)
 
 	if u.Len() != 2 {
 		t.Error("Difference: the set doesn't have all items in it.")
@@ -53,7 +51,7 @@ func TestDifference(t *testing.T) {
 		t.Error("Difference: items are not availabile in the set.")
 	}
 
-	y := Difference(r, r)
+	y := collection.Difference(r, r)
 	if y.Len() != 0 {
 		t.Error("Difference: size should be zero")
 	}
@@ -67,7 +65,7 @@ func TestIntersection(t *testing.T) {
 	s2.Add("3", "5", "6")
 	s3 := NewTS()
 	s3.Add("4", "5", "6", "7")
-	u := Intersection(s1, s2, s3)
+	u := collection.Intersection(s1, s2, s3)
 
 	if u.Len() != 1 {
 		t.Error("Intersection: the set doesn't have all items in it.")
@@ -83,7 +81,7 @@ func TestIntersection2(t *testing.T) {
 	s1.Add("1", "3", "4", "5")
 	s2 := NewTS()
 	s2.Add("5", "6")
-	i := Intersection(s1, s2)
+	i := collection.Intersection(s1, s2)
 
 	if i.Len() != 1 {
 		t.Error("Intersection: size should be 1, it was", i.Len())
@@ -99,7 +97,7 @@ func TestExclusion(t *testing.T) {
 	s.Add("1", "2", "3")
 	r := NewTS()
 	r.Add("3", "4", "5")
-	u := Exclusion(s, r)
+	u := collection.Exclusion(s, r)
 
 	if u.Len() != 4 {
 		t.Error("Exclusion: the set doesn't have all items in it.")
@@ -155,7 +153,7 @@ func benchmarkIntersection(b *testing.B, numberOfItems int) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		Intersection(s1, s2)
+		collection.Intersection(s1, s2)
 	}
 }
 
