@@ -466,86 +466,19 @@ func TestCopy(t *testing.T) {
 	}
 }
 
-func TestUnion(t *testing.T) {
+func TestCopyCollection(t *testing.T) {
 	cases := []struct {
-		arrays   []Interface
-		expected Interface
+		array Interface
 	}{
-		{[]Interface{New(1, 42, -8), New(5, 42, 6), New(1, 42, -8, 7)}, New(1, 42, -8, 5, 6, 7)},
-		{[]Interface{New(1, 42, -8), New(5, 42, 6)}, New(1, 42, -8, 5, 6)},
-		{[]Interface{New(1, 42, -8)}, New(1, 42, -8)},
-		{[]Interface{}, nil},
-		{[]Interface{NewTS(1, 42, -8), NewTS(5, 42, 6), NewTS(1, 42, -8, 7)}, NewTS(1, 42, -8, 5, 6, 7)},
-		{[]Interface{NewTS(1, 42, -8), NewTS(5, 42, 6)}, NewTS(1, 42, -8, 5, 6)},
-		{[]Interface{NewTS(1, 42, -8)}, NewTS(1, 42, -8)},
+		{New(1, 42, -8)},
+		{New(-66, 1000, 32)},
+		{NewTS(1, 42, -8)},
+		{NewTS(-66, 1000, 32)},
 	}
 	for _, c := range cases {
-		result := Union(c.arrays...)
-		if c.expected != nil && !result.IsEqual(c.expected) {
-			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), result.Slice())
-		}
-	}
-}
-
-func TestDifference(t *testing.T) {
-	cases := []struct {
-		arrays   []Interface
-		expected Interface
-	}{
-		{[]Interface{New(1, 42, -8), New(-8, 6, 6), New(1, 7)}, New(42)},
-		{[]Interface{New(1, 42, -8), New(-8, 1, 6)}, New(42)},
-		{[]Interface{New(1, 42, -8)}, New(1, 42, -8)},
-		{[]Interface{}, nil},
-		{[]Interface{NewTS(1, 42, -8), NewTS(-8, 6, 6), NewTS(1, 7)}, NewTS(42)},
-		{[]Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6)}, NewTS(42)},
-		{[]Interface{NewTS(1, 42, -8)}, NewTS(1, 42, -8)},
-	}
-	for _, c := range cases {
-		result := Difference(c.arrays...)
-		if c.expected != nil && !result.IsEqual(c.expected) {
-			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), result.Slice())
-		}
-	}
-}
-
-func TestIntersection(t *testing.T) {
-	cases := []struct {
-		arrays   []Interface
-		expected Interface
-	}{
-		{[]Interface{New(1, 42, -8), New(-8, 1, 6), New(1, 7)}, New(1)},
-		{[]Interface{New(1, 42, -8), New(-8, 1, 6)}, New(1, -8)},
-		{[]Interface{New(1, 42, -8)}, New(1, 42, -8)},
-		{[]Interface{}, nil},
-		{[]Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6), NewTS(1, 7)}, NewTS(1)},
-		{[]Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6)}, NewTS(1, -8)},
-		{[]Interface{NewTS(1, 42, -8)}, NewTS(1, 42, -8)},
-	}
-	for _, c := range cases {
-		result := Intersection(c.arrays...)
-		if c.expected != nil && !result.IsEqual(c.expected) {
-			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), result.Slice())
-		}
-	}
-}
-
-func TestExclusion(t *testing.T) {
-	cases := []struct {
-		arrays   []Interface
-		expected Interface
-	}{
-		{[]Interface{New(1, 42, -8), New(-8, 1, 6), New(1, 7)}, New(42, 6, 7)},
-		{[]Interface{New(1, 42, -8), New(-8, 1, 6)}, New(42, 6)},
-		{[]Interface{New(1, 42, -8)}, New(1, 42, -8)},
-		{[]Interface{}, nil},
-		{[]Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6), NewTS(1, 7)}, NewTS(42, 6, 7)},
-		{[]Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6)}, NewTS(42, 6)},
-		{[]Interface{NewTS(1, 42, -8)}, NewTS(1, 42, -8)},
-	}
-	for _, c := range cases {
-		result := Exclusion(c.arrays...)
-		if c.expected != nil && !result.IsEqual(c.expected) {
-			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), result.Slice())
+		cpy := c.array.CopyCollection()
+		if !cpy.IsEqual(c.array) {
+			t.Errorf("Expected %v. Got %v.", c.array.Slice(), cpy.Slice())
 		}
 	}
 }

@@ -3,6 +3,7 @@ package array
 import (
 	"fmt"
 	"github.com/khezen/check"
+	"github.com/khezen/items/collection"
 	"reflect"
 	"strings"
 )
@@ -141,13 +142,14 @@ func (a *array) IsEmpty() bool {
 	return a.Len() == 0
 }
 
-func (a *array) IsEqual(t Interface) bool {
+func (a *array) IsEqual(t collection.Interface) bool {
 	length := a.Len()
 	if length != t.Len() {
 		return false
 	}
+	items := t.Slice()
 	for i, item := range a.Slice() {
-		compared, _ := t.Get(i)
+		compared := items[i]
 		if reflect.TypeOf(item) != reflect.TypeOf(compared) {
 			return false
 		}
@@ -160,7 +162,7 @@ func (a *array) IsEqual(t Interface) bool {
 
 // Merge is like Union, however it modifies the current array it's applied on
 // with the given t array.
-func (a *array) Merge(t Interface) {
+func (a *array) Merge(t collection.Interface) {
 	t.Each(func(item interface{}) bool {
 		if !a.Has(item) {
 			a.Add(item)
@@ -171,11 +173,11 @@ func (a *array) Merge(t Interface) {
 
 // it's not the opposite of Merge.
 // Separate removes the array items containing in t from array s. Please aware that
-func (a *array) Separate(t Interface) {
+func (a *array) Separate(t collection.Interface) {
 	a.Remove(t.Slice()...)
 }
 
-func (a *array) Retain(t Interface) {
+func (a *array) Retain(t collection.Interface) {
 	arr := make([]interface{}, 0, a.Len())
 	a.Each(func(item interface{}) bool {
 		if t.Has(item) {
@@ -207,4 +209,8 @@ func (a *array) Slice() []interface{} {
 // Copy returns a new Set with a copy of s.
 func (a *array) Copy() Interface {
 	return New(a.s...)
+}
+
+func (a *array) CopyCollection() collection.Interface {
+	return a.Copy()
 }

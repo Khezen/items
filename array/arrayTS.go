@@ -1,6 +1,7 @@
 package array
 
 import (
+	"github.com/khezen/items/collection"
 	"sync"
 )
 
@@ -123,7 +124,7 @@ func (a *arrayTS) IsEmpty() bool {
 	return a.array.IsEmpty()
 }
 
-func (a *arrayTS) IsEqual(t Interface) bool {
+func (a *arrayTS) IsEqual(t collection.Interface) bool {
 	a.l.RLock()
 	defer a.l.RUnlock()
 	return a.array.IsEqual(t)
@@ -131,7 +132,7 @@ func (a *arrayTS) IsEqual(t Interface) bool {
 
 // Merge is like Union, however it modifies the current array it's applied on
 // with the given t array.
-func (a *arrayTS) Merge(t Interface) {
+func (a *arrayTS) Merge(t collection.Interface) {
 	if !t.IsEmpty() {
 		a.l.Lock()
 		defer a.l.Unlock()
@@ -139,7 +140,7 @@ func (a *arrayTS) Merge(t Interface) {
 	}
 }
 
-func (a *arrayTS) Separate(t Interface) {
+func (a *arrayTS) Separate(t collection.Interface) {
 	if !t.IsEmpty() {
 		a.l.Lock()
 		defer a.l.Unlock()
@@ -147,7 +148,7 @@ func (a *arrayTS) Separate(t Interface) {
 	}
 }
 
-func (a *arrayTS) Retain(t Interface) {
+func (a *arrayTS) Retain(t collection.Interface) {
 	a.l.Lock()
 	defer a.l.Unlock()
 	a.array.Retain(t)
