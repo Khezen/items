@@ -2,6 +2,7 @@ package array
 
 import (
 	"github.com/khezen/check"
+	"github.com/khezen/items/collection"
 	"testing"
 )
 
@@ -479,6 +480,90 @@ func TestCopyCollection(t *testing.T) {
 		cpy := c.array.CopyCollection()
 		if !cpy.IsEqual(c.array) {
 			t.Errorf("Expected %v. Got %v.", c.array.Slice(), cpy.Slice())
+		}
+	}
+}
+
+func TestUnion(t *testing.T) {
+	cases := []struct {
+		arrays   []collection.Interface
+		expected Interface
+	}{
+		{[]collection.Interface{New(1, 42, -8), New(5, 42, 6), New(1, 42, -8, 7)}, New(1, 42, -8, 5, 6, 7)},
+		{[]collection.Interface{New(1, 42, -8), New(5, 42, 6)}, New(1, 42, -8, 5, 6)},
+		{[]collection.Interface{New(1, 42, -8)}, New(1, 42, -8)},
+		{[]collection.Interface{}, nil},
+		{[]collection.Interface{NewTS(1, 42, -8), NewTS(5, 42, 6), NewTS(1, 42, -8, 7)}, NewTS(1, 42, -8, 5, 6, 7)},
+		{[]collection.Interface{NewTS(1, 42, -8), NewTS(5, 42, 6)}, NewTS(1, 42, -8, 5, 6)},
+		{[]collection.Interface{NewTS(1, 42, -8)}, NewTS(1, 42, -8)},
+	}
+	for _, c := range cases {
+		result := collection.Union(c.arrays...)
+		if c.expected != nil && !result.IsEqual(c.expected) {
+			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), result.Slice())
+		}
+	}
+}
+
+func TestDifference(t *testing.T) {
+	cases := []struct {
+		arrays   []collection.Interface
+		expected Interface
+	}{
+		{[]collection.Interface{New(1, 42, -8), New(-8, 6, 6), New(1, 7)}, New(42)},
+		{[]collection.Interface{New(1, 42, -8), New(-8, 1, 6)}, New(42)},
+		{[]collection.Interface{New(1, 42, -8)}, New(1, 42, -8)},
+		{[]collection.Interface{}, nil},
+		{[]collection.Interface{NewTS(1, 42, -8), NewTS(-8, 6, 6), NewTS(1, 7)}, NewTS(42)},
+		{[]collection.Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6)}, NewTS(42)},
+		{[]collection.Interface{NewTS(1, 42, -8)}, NewTS(1, 42, -8)},
+	}
+	for _, c := range cases {
+		result := collection.Difference(c.arrays...)
+		if c.expected != nil && !result.IsEqual(c.expected) {
+			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), result.Slice())
+		}
+	}
+}
+
+func TestIntersection(t *testing.T) {
+	cases := []struct {
+		arrays   []collection.Interface
+		expected Interface
+	}{
+		{[]collection.Interface{New(1, 42, -8), New(-8, 1, 6), New(1, 7)}, New(1)},
+		{[]collection.Interface{New(1, 42, -8), New(-8, 1, 6)}, New(1, -8)},
+		{[]collection.Interface{New(1, 42, -8)}, New(1, 42, -8)},
+		{[]collection.Interface{}, nil},
+		{[]collection.Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6), NewTS(1, 7)}, NewTS(1)},
+		{[]collection.Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6)}, NewTS(1, -8)},
+		{[]collection.Interface{NewTS(1, 42, -8)}, NewTS(1, 42, -8)},
+	}
+	for _, c := range cases {
+		result := collection.Intersection(c.arrays...)
+		if c.expected != nil && !result.IsEqual(c.expected) {
+			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), result.Slice())
+		}
+	}
+}
+
+func TestExclusion(t *testing.T) {
+	cases := []struct {
+		arrays   []collection.Interface
+		expected Interface
+	}{
+		{[]collection.Interface{New(1, 42, -8), New(-8, 1, 6), New(1, 7)}, New(42, 6, 7)},
+		{[]collection.Interface{New(1, 42, -8), New(-8, 1, 6)}, New(42, 6)},
+		{[]collection.Interface{New(1, 42, -8)}, New(1, 42, -8)},
+		{[]collection.Interface{}, nil},
+		{[]collection.Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6), NewTS(1, 7)}, NewTS(42, 6, 7)},
+		{[]collection.Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6)}, NewTS(42, 6)},
+		{[]collection.Interface{NewTS(1, 42, -8)}, NewTS(1, 42, -8)},
+	}
+	for _, c := range cases {
+		result := collection.Exclusion(c.arrays...)
+		if c.expected != nil && !result.IsEqual(c.expected) {
+			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), result.Slice())
 		}
 	}
 }
