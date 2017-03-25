@@ -117,6 +117,7 @@ hashmap data structure.
 
 ```Golang
 type Interface interface {
+	Get(k interface{})
 	Put(k, v interface{})
 	Remove(keys ...interface{})
 	Has(keys ...interface{}) bool

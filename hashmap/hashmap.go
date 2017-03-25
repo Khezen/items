@@ -2,6 +2,7 @@ package hashmap
 
 // Interface describes functions a Map must expose
 type Interface interface {
+	Get(k interface{})
 	Put(k, v interface{})
 	Remove(keys ...interface{})
 	Has(keys ...interface{}) bool
