@@ -122,7 +122,7 @@ type Interface interface {
 	Remove(keys ...interface{})
 	Has(keys ...interface{}) bool
 	HasValue(values ...interface{}) bool
-	KeyOf(value interface{}) interface{}
+	KeyOf(value interface{}) (interface{}, error)
 	Each(func(k, v interface{}) bool)
 
 	Len() int
@@ -143,5 +143,5 @@ package example
 import "github.com/khezen/struct/hashmap"
 
 hm := hashmap.New()
-threadsafehm := hashmap.NewTS()
+threadsafeHm := hashmap.NewTS()
 ```
