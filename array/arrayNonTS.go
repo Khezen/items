@@ -143,6 +143,11 @@ func (a *array) IsEmpty() bool {
 }
 
 func (a *array) IsEqual(t collection.Interface) bool {
+	// Force locking only if given set is threadsafe.
+	if conv, ok := t.(*arrayTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	length := a.Len()
 	if length != t.Len() {
 		return false
