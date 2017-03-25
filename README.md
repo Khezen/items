@@ -1,5 +1,5 @@
-[![Build Status](http://img.shields.io/travis/Khezen/array.svg?style=flat-square)](https://travis-ci.org/Khezen/items) [![codecov](https://img.shields.io/codecov/c/github/Khezen/array/master.svg?style=flat-square)](https://codecov.io/gh/Khezen/items)
-[![Go Report Card](https://goreportcard.com/badge/github.com/khezen/array?style=flat-square)](https://goreportcard.com/report/github.com/khezen/items)
+[![Build Status](http://img.shields.io/travis/Khezen/items.svg?style=flat-square)](https://travis-ci.org/Khezen/items) [![codecov](https://img.shields.io/codecov/c/github/Khezen/items/master.svg?style=flat-square)](https://codecov.io/gh/Khezen/items)
+[![Go Report Card](https://goreportcard.com/badge/github.com/khezen/items?style=flat-square)](https://goreportcard.com/report/github.com/khezen/items)
 
 # Base collection [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/items/collection)
 
