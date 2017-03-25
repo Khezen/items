@@ -77,21 +77,9 @@ func Intersection(arrays ...Interface) Interface {
 	if len(arrays) == 0 {
 		return nil
 	}
-
 	result := Union(arrays...)
-	for i := 0; i < result.Len(); i++ {
-		removed := false
-		item, _ := result.Get(i)
-		for _, array := range arrays {
-			if !removed && !array.Has(item) {
-				result.RemoveAt(i)
-				removed = true
-				break
-			}
-		}
-		if removed {
-			i--
-		}
+	for _, array := range arrays {
+		result.Retain(array)
 	}
 	return result
 }

@@ -177,8 +177,8 @@ func (a *array) Separate(t Interface) {
 
 func (a *array) Retain(t Interface) {
 	arr := make([]interface{}, 0, a.Len())
-	t.Each(func(item interface{}) bool {
-		if a.Has(item) {
+	a.Each(func(item interface{}) bool {
+		if t.Has(item) {
 			arr = append(arr, item)
 		}
 		return true
