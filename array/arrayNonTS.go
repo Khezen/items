@@ -93,24 +93,6 @@ func (a *array) IndexOf(item interface{}) (int, error) {
 	return -1, fmt.Errorf("not found")
 }
 
-func (a *array) SubArray(i, j int) (Interface, error) {
-	length := a.Len()
-	err := check.Index(i, length)
-	if err != nil {
-		return nil, err
-	}
-	err = check.Index(j, length)
-	if err != nil {
-		return nil, err
-	}
-	err = check.Inferior(i, j)
-	slice := a.Slice()
-	result := New(slice...)
-	result.Remove(slice[:i]...)
-	result.Remove(slice[j+1:]...)
-	return result, nil
-}
-
 func (a *array) Swap(i, j int) error {
 	itemi, err := a.Get(i)
 	if err != nil {
@@ -222,6 +204,27 @@ func (a *array) String() string {
 // IntSlice() methods for returning slices of type string or int.
 func (a *array) Slice() []interface{} {
 	return a.s
+}
+
+func (a *array) SubArray(i, j int) (Interface, error) {
+	length := a.Len()
+	err := check.Index(i, length)
+	if err != nil {
+		return nil, err
+	}
+	err = check.Index(j, length)
+	if err != nil {
+		return nil, err
+	}
+	err = check.Inferior(i, j)
+	if err != nil {
+		return nil, err
+	}
+	slice := a.Slice()
+	result := New(slice...)
+	result.Remove(slice[:i]...)
+	result.Remove(slice[j+1:]...)
+	return result, nil
 }
 
 // Copy returns a new Set with a copy of s.

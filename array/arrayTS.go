@@ -75,19 +75,6 @@ func (a *arrayTS) IndexOf(item interface{}) (int, error) {
 	return a.array.IndexOf(item)
 }
 
-func (a *arrayTS) SubArray(i, j int) (Interface, error) {
-	a.l.RLock()
-	defer a.l.RUnlock()
-	arr, err := a.array.SubArray(i, j)
-	if err != nil {
-		return nil, err
-	}
-	return &arrayTS{
-		*arr.(*array),
-		sync.RWMutex{},
-	}, nil
-}
-
 func (a *arrayTS) Swap(i, j int) error {
 	a.l.Lock()
 	defer a.l.Unlock()
@@ -186,6 +173,19 @@ func (a *arrayTS) Copy() Interface {
 	a.l.RLock()
 	defer a.l.RUnlock()
 	return NewTS(a.s...)
+}
+
+func (a *arrayTS) SubArray(i, j int) (Interface, error) {
+	a.l.RLock()
+	defer a.l.RUnlock()
+	arr, err := a.array.SubArray(i, j)
+	if err != nil {
+		return nil, err
+	}
+	return &arrayTS{
+		*arr.(*array),
+		sync.RWMutex{},
+	}, nil
 }
 
 func (a *arrayTS) CopyCollection() collection.Interface {

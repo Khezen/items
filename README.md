@@ -62,8 +62,10 @@ type Interface interface {
 	IndexOf(interface{}) (int, error)
 	Swap(i, j int) error
 
+	SubArray(i, j int) (Interface, error)
 	Copy() Interface
 }
+
 ```
 
 ```golang
