@@ -157,6 +157,22 @@ func benchmarkIntersection(b *testing.B, numberOfItems int) {
 	}
 }
 
+func TestReplace(t *testing.T) {
+	cases := []struct {
+		set, expected    Interface
+		item, substitute interface{}
+	}{
+		{New(1, 42, -8), New(1, 160, -8), 42, 160},
+		{NewTS(1, 42, -8), NewTS(1, 160, -8), 42, 160},
+	}
+	for _, c := range cases {
+		c.set.Replace(c.item, c.substitute)
+		if !c.set.IsEqual(c.expected) {
+			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), c.set.Slice())
+		}
+	}
+}
+
 func BenchmarkIntersection10(b *testing.B) {
 	benchmarkIntersection(b, 10)
 }
