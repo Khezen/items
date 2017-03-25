@@ -3,9 +3,13 @@
 
 # Collections for Go
 
-## array [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/items/array)
+## Array [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/items/array)
 
- Dynamic array data structure for Go.
+`
+import "github.com/khezen/items/array"
+`
+
+Dynamic array data structure for Go.
 
 Abstraction layer over slices exposing utility functions and thread safe implementation of dynamic array.
 
@@ -55,14 +59,19 @@ func Exclusion(arrays ...Interface) Interface
 ```golang
 package example
 
-import "github.com/khezen/array"
+import "github.com/khezen/items/array"
 
 arr := array.New(0, 2, -4, 10)
 threadsafeArr := array.NewTS(0, 2, -4, 10)
 ```
 
 
-## set [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/items/set)
+## Set [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/items/set)
+
+`
+import "github.com/khezen/items/set"
+`
+
 
 set is a basic and simple, hash-based, **set** data structure implementation
 in Go (Golang).
@@ -112,7 +121,7 @@ func Exclusion(set1 Interface, set2 Interface, sets ...Interface) Interface
 ```golang
 package example
 
-import "github.com/khezen/set"
+import "github.com/khezen/items/set"
 
 set := set.New(0, 2, -4, 10)
 threadsafeSet := set.NewTS(0, 2, -4, 10)
