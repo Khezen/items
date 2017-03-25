@@ -174,3 +174,7 @@ func (a *arrayTS) Copy() Interface {
 	defer a.l.RUnlock()
 	return NewTS(a.s...)
 }
+
+func (a *arrayTS) CopyCollection() collection.Interface {
+	return a.Copy()
+}

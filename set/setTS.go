@@ -129,3 +129,7 @@ func (s *setTS) Retain(t collection.Interface) {
 	defer s.l.Unlock()
 	s.set.Retain(t)
 }
+
+func (s *setTS) CopyCollection() collection.Interface {
+	return s.Copy()
+}
