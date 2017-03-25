@@ -188,6 +188,37 @@ func TestIndexOf(t *testing.T) {
 	}
 }
 
+func TestSubArray(t *testing.T) {
+	cases := []struct {
+		array, expected Interface
+		i, j            int
+		expectErr       bool
+	}{
+		{New(1, 42, -8, 12), New(42, -8), 1, 2, false},
+		{New(1, 42, -8, 12), nil, -1, 2, true},
+		{New(1, 42, -8, 12), nil, 1000, 2, true},
+		{New(1, 42, -8, 12), nil, 1, -2, true},
+		{New(1, 42, -8, 12), nil, 1, 1000, true},
+		{NewTS(1, 42, -8, 12), NewTS(42, -8), 1, 2, false},
+		{NewTS(1, 42, -8, 12), nil, -1, 2, true},
+		{NewTS(1, 42, -8, 12), nil, 1000, 2, true},
+		{NewTS(1, 42, -8, 12), nil, 1, -2, true},
+		{NewTS(1, 42, -8, 12), nil, 1, 1000, true},
+	}
+	for _, c := range cases {
+		arr, err := c.array.SubArray(c.i, c.j)
+		testErr(err, c.expectErr, t)
+		if !c.expectErr {
+			if !arr.IsEqual(c.expected) {
+				t.Errorf("Expected %v. Got %v.", c.expected.Slice(), arr.Slice())
+			}
+			if arr.IsEqual(c.array) {
+				t.Errorf("c.array should not be modified")
+			}
+		}
+	}
+}
+
 func TestSwap(t *testing.T) {
 	cases := []struct {
 		array, expected Interface

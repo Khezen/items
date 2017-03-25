@@ -99,14 +99,16 @@ func (a *array) SubArray(i, j int) (Interface, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = check.Inferior(j, length+1)
+	err = check.Index(j, length)
 	if err != nil {
 		return nil, err
 	}
 	err = check.Inferior(i, j)
-	slice := make([]interface{}, 0, j-i)
-	slice = append(slice[i:], a.Slice()[:j])
-	return New(slice...), nil
+	slice := a.Slice()
+	result := New(slice...)
+	result.Remove(slice[:i]...)
+	result.Remove(slice[j+1:]...)
+	return result, nil
 }
 
 func (a *array) Swap(i, j int) error {
