@@ -105,3 +105,41 @@ import "github.com/khezen/struct/set"
 set := set.New(0, 2, -4, 10)
 threadsafeSet := set.NewTS(0, 2, -4, 10)
 ```
+
+# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/hashmap) Hashmap
+
+`
+import "github.com/khezen/struct/hashmap"
+`
+
+Both threadsafe and non-threadsafe implementations of a generic
+hashmap data structure.
+
+```Golang
+type Interface interface {
+	Put(k, v interface{})
+	Remove(keys ...interface{})
+	Has(keys ...interface{}) bool
+	HasValue(values ...interface{}) bool
+	Each(func(k, v interface{}) bool)
+
+	Len() int
+	Clear()
+	IsEmpty() bool
+	IsEqual(Interface) bool
+
+	String() string
+	Keys() []interface{}
+	Values() []interface{}
+	Copy() Interface
+}
+```
+
+```golang
+package example
+
+import "github.com/khezen/struct/hashmap"
+
+set := set.New()
+threadsafeSet := set.NewTS()
+```
