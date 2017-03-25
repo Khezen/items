@@ -199,11 +199,13 @@ func TestSubArray(t *testing.T) {
 		{New(1, 42, -8, 12), nil, 1000, 2, true},
 		{New(1, 42, -8, 12), nil, 1, -2, true},
 		{New(1, 42, -8, 12), nil, 1, 1000, true},
+		{New(1, 42, -8, 12), nil, 2, 1, true},
 		{NewTS(1, 42, -8, 12), NewTS(42, -8), 1, 2, false},
 		{NewTS(1, 42, -8, 12), nil, -1, 2, true},
 		{NewTS(1, 42, -8, 12), nil, 1000, 2, true},
 		{NewTS(1, 42, -8, 12), nil, 1, -2, true},
 		{NewTS(1, 42, -8, 12), nil, 1, 1000, true},
+		{NewTS(1, 42, -8, 12), nil, 2, 1, true},
 	}
 	for _, c := range cases {
 		arr, err := c.array.SubArray(c.i, c.j)
