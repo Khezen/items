@@ -1,7 +1,7 @@
 [![Build Status](http://img.shields.io/travis/Khezen/struct.svg?style=flat-square)](https://travis-ci.org/Khezen/struct) [![codecov](https://img.shields.io/codecov/c/github/Khezen/struct/master.svg?style=flat-square)](https://codecov.io/gh/Khezen/struct)
 [![Go Report Card](https://goreportcard.com/badge/github.com/khezen/struct?style=flat-square)](https://goreportcard.com/report/github.com/khezen/struct)
 
-# Base collection [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/collection)
+# Collection [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/collection)
 
 `
 import "github.com/khezen/struct/collection"
