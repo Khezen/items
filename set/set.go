@@ -59,7 +59,7 @@ func Difference(set1, set2 Interface, sets ...Interface) Interface {
 	s := set1.Copy()
 	s.Separate(set2)
 	for _, set := range sets {
-		s.Separate(set) // seperate is thread safe
+		s.Separate(set) // separate is thread safe
 	}
 	return s
 }

@@ -56,7 +56,7 @@ func Difference(collections ...Interface) Interface {
 	s := collections[0].CopyCollection()
 	collections = collections[1:]
 	for _, collection := range collections {
-		s.Separate(collection) // seperate is thread safe
+		s.Separate(collection) // separate is thread safe
 	}
 	return s
 }
