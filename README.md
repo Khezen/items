@@ -1,10 +1,10 @@
-[![Build Status](http://img.shields.io/travis/Khezen/items.svg?style=flat-square)](https://travis-ci.org/Khezen/items) [![codecov](https://img.shields.io/codecov/c/github/Khezen/items/master.svg?style=flat-square)](https://codecov.io/gh/Khezen/items)
-[![Go Report Card](https://goreportcard.com/badge/github.com/khezen/items?style=flat-square)](https://goreportcard.com/report/github.com/khezen/items)
+[![Build Status](http://img.shields.io/travis/Khezen/struct.svg?style=flat-square)](https://travis-ci.org/Khezen/struct) [![codecov](https://img.shields.io/codecov/c/github/Khezen/struct/master.svg?style=flat-square)](https://codecov.io/gh/Khezen/struct)
+[![Go Report Card](https://goreportcard.com/badge/github.com/khezen/struct?style=flat-square)](https://goreportcard.com/report/github.com/khezen/struct)
 
-# Base collection [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/items/collection)
+# Base collection [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/collection)
 
 `
-import "github.com/khezen/items/collection"
+import "github.com/khezen/struct/collection"
 `
 
 ```golang
@@ -43,10 +43,10 @@ func Intersection(collections ...Interface) Interface
 func Exclusion(collections ...Interface) Interface
 ```
 
-# Array [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/items/array)
+# Array [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/array)
 
 `
-import "github.com/khezen/items/array"
+import "github.com/khezen/struct/array"
 `
 
 Abstraction layer over slices exposing utility functions and thread safe implementation of dynamic array.
@@ -68,17 +68,17 @@ type Interface interface {
 ```golang
 package example
 
-import "github.com/khezen/items/array"
+import "github.com/khezen/struct/array"
 
 arr := array.New(0, 2, -4, 10)
 threadsafeArr := array.NewTS(0, 2, -4, 10)
 ```
 
 
-# Set [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/items/set)
+# Set [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/set)
 
 `
-import "github.com/khezen/items/set"
+import "github.com/khezen/struct/set"
 `
 
 Both threadsafe and non-threadsafe implementations of a generic
@@ -97,7 +97,7 @@ type Interface interface {
 ```golang
 package example
 
-import "github.com/khezen/items/set"
+import "github.com/khezen/struct/set"
 
 set := set.New(0, 2, -4, 10)
 threadsafeSet := set.NewTS(0, 2, -4, 10)
