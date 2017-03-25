@@ -93,6 +93,22 @@ func (a *array) IndexOf(item interface{}) (int, error) {
 	return -1, fmt.Errorf("not found")
 }
 
+func (a *array) SubArray(i, j int) (Interface, error) {
+	length := a.Len()
+	err := check.Index(i, length)
+	if err != nil {
+		return nil, err
+	}
+	err = check.Inferior(j, length+1)
+	if err != nil {
+		return nil, err
+	}
+	err = check.Inferior(i, j)
+	slice := make([]interface{}, 0, j-i)
+	slice = append(slice[i:], a.Slice()[:j])
+	return New(slice...), nil
+}
+
 func (a *array) Swap(i, j int) error {
 	itemi, err := a.Get(i)
 	if err != nil {
