@@ -49,8 +49,6 @@ func Exclusion(collections ...Interface) Interface
 import "github.com/khezen/items/array"
 `
 
-Dynamic array data structure for Go.
-
 Abstraction layer over slices exposing utility functions and thread safe implementation of dynamic array.
 
 ```golang
@@ -83,11 +81,7 @@ threadsafeArr := array.NewTS(0, 2, -4, 10)
 import "github.com/khezen/items/set"
 `
 
-
-set is a basic and simple, hash-based, **set** data structure implementation
-in Go (Golang).
-
-set provides both threadsafe and non-threadsafe implementations of a generic
+Both threadsafe and non-threadsafe implementations of a generic
 set data structure.
 
 ```Golang
