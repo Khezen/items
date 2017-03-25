@@ -3,7 +3,7 @@ package array
 import (
 	"fmt"
 	"github.com/khezen/check"
-	"github.com/khezen/items/collection"
+	"github.com/khezen/struct/collection"
 	"reflect"
 	"strings"
 )

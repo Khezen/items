@@ -5,7 +5,7 @@
 // between the start and the end of the operation.
 package array
 
-import "github.com/khezen/items/collection"
+import "github.com/khezen/struct/collection"
 
 // Interface is describing a Set. Sets are an unordered, unique list of values.
 type Interface interface {

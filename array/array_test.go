@@ -2,7 +2,7 @@ package array
 
 import (
 	"github.com/khezen/check"
-	"github.com/khezen/items/collection"
+	"github.com/khezen/struct/collection"
 	"testing"
 )
 

@@ -2,7 +2,7 @@ package set
 
 import (
 	"fmt"
-	"github.com/khezen/items/collection"
+	"github.com/khezen/struct/collection"
 	"strings"
 )
 

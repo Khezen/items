@@ -6,7 +6,7 @@
 package set
 
 import (
-	"github.com/khezen/items/collection"
+	"github.com/khezen/struct/collection"
 )
 
 // Interface is describing a set. sets are an unordered, unique Slice of values.

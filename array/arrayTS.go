@@ -1,7 +1,7 @@
 package array
 
 import (
-	"github.com/khezen/items/collection"
+	"github.com/khezen/struct/collection"
 	"sync"
 )
 
