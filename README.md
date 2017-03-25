@@ -7,7 +7,7 @@
 import "github.com/khezen/struct/collection"
 `
 
-Expose base collection interface and mixing operations(union, intersection, etc...)
+Exposes base collection interface and mixing operations(union, intersection, etc...)
 
 ```golang
 type Interface interface {
