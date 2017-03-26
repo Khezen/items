@@ -67,11 +67,43 @@ func TestRemove(t *testing.T) {
 }
 
 func TestHas(t *testing.T) {
-
+	cases := []struct {
+		h    Interface
+		keys []interface{}
+		has  bool
+	}{
+		{New("1", 1, "42", 42, "-8", -8), []interface{}{"-8"}, true},
+		{New("1", 1, "42", 42, "-8", -8), []interface{}{"-8", "1"}, true},
+		{New("1", 1, "42", 42, "-8", -8), []interface{}{"-8", "-1"}, false},
+		{NewTS("1", 1, "42", 42, "-8", -8), []interface{}{"-8"}, true},
+		{NewTS("1", 1, "42", 42, "-8", -8), []interface{}{"-8", "1"}, true},
+		{NewTS("1", 1, "42", 42, "-8", -8), []interface{}{"-8", "-1"}, false},
+	}
+	for _, c := range cases {
+		if c.h.Has(c.keys...) != c.has {
+			t.Errorf("Expected %v. Got %v. => %v", c.has, c.h.Has(c.keys...), c.h.String())
+		}
+	}
 }
 
 func TestHasValue(t *testing.T) {
-
+	cases := []struct {
+		h      Interface
+		values []interface{}
+		has    bool
+	}{
+		{New("1", 1, "42", 42, "-8", -8), []interface{}{-8}, true},
+		{New("1", 1, "42", 42, "-8", -8), []interface{}{-8, 1}, true},
+		{New("1", 1, "42", 42, "-8", -8), []interface{}{-8, -1}, false},
+		{NewTS("1", 1, "42", 42, "-8", -8), []interface{}{-8}, true},
+		{NewTS("1", 1, "42", 42, "-8", -8), []interface{}{-8, 1}, true},
+		{NewTS("1", 1, "42", 42, "-8", -8), []interface{}{-8, -1}, false},
+	}
+	for _, c := range cases {
+		if c.h.HasValue(c.values...) != c.has {
+			t.Errorf("Expected %v. Got %v. => %v", c.has, c.h.HasValue(c.values...), c.h.String())
+		}
+	}
 }
 
 func TestKeyOf(t *testing.T) {
