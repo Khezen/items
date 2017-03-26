@@ -47,7 +47,23 @@ func TestPut(t *testing.T) {
 }
 
 func TestRemove(t *testing.T) {
-
+	cases := []struct {
+		h, expected Interface
+		keys        []interface{}
+	}{
+		{New("1", 1, "42", 42, "-8", -8), New("1", 1, "42", 42), []interface{}{"-8"}},
+		{New("1", 1, "42", 42, "-8", -8), New("42", 42), []interface{}{"-8", "1"}},
+		{New("1", 1, "42", 42, "-8", -8), New("1", 1, "42", 42), []interface{}{"-8", "-1"}},
+		{NewTS("1", 1, "42", 42, "-8", -8), NewTS("1", 1, "42", 42), []interface{}{"-8"}},
+		{NewTS("1", 1, "42", 42, "-8", -8), NewTS("42", 42), []interface{}{"-8", "1"}},
+		{NewTS("1", 1, "42", 42, "-8", -8), NewTS("1", 1, "42", 42), []interface{}{"-8", "-1"}},
+	}
+	for _, c := range cases {
+		c.h.Remove(c.keys...)
+		if !c.h.IsEqual(c.expected) {
+			t.Errorf("Expected %v. Got %v.", c.expected.Map(), c.h.Map())
+		}
+	}
 }
 
 func TestHas(t *testing.T) {
