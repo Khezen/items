@@ -32,7 +32,18 @@ func TestGet(t *testing.T) {
 }
 
 func TestPut(t *testing.T) {
-
+	cases := []struct {
+		h, expected Interface
+		key, value  interface{}
+	}{
+		{New("1", 1, "42", 42), New("1", 1, "42", 42, "-8", -8), "-8", -8},
+	}
+	for _, c := range cases {
+		c.h.Put(c.key, c.value)
+		if !c.h.IsEqual(c.expected) {
+			t.Errorf("Expected %v. Got %v.", c.expected.Map(), c.h.Map())
+		}
+	}
 }
 
 func TestRemove(t *testing.T) {

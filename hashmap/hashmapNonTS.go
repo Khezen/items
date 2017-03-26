@@ -107,7 +107,7 @@ func (h *hashmap) IsEqual(t Interface) bool {
 	equal := true
 	t.Each(func(k, v interface{}) bool {
 		value, err := h.Get(k)
-		equal = equal && err != nil && value == v
+		equal = equal && err == nil && value == v
 		return equal // if false, Each() will end
 	})
 	return equal
@@ -116,7 +116,7 @@ func (h *hashmap) IsEqual(t Interface) bool {
 func (h *hashmap) String() string {
 	str := ""
 	h.Each(func(k, v interface{}) bool {
-		str = fmt.Sprintf("%v:%v ", k, v)
+		str = str + fmt.Sprintf("%v:%v ", k, v)
 		return true
 	})
 	return fmt.Sprintf("[%v]", strings.Trim(str, " "))
@@ -138,6 +138,10 @@ func (h *hashmap) Values() []interface{} {
 		return true
 	})
 	return values
+}
+
+func (h *hashmap) Map() map[interface{}]interface{} {
+	return h.m
 }
 
 func (h *hashmap) Copy() Interface {

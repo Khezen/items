@@ -18,5 +18,6 @@ type Interface interface {
 	String() string
 	Keys() []interface{}
 	Values() []interface{}
+	Map() map[interface{}]interface{}
 	Copy() Interface
 }
