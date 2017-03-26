@@ -127,7 +127,24 @@ func TestKeyOf(t *testing.T) {
 }
 
 func TestEach(t *testing.T) {
-
+	cases := []struct {
+		h                 Interface
+		counter, expected int
+	}{
+		{New("1", 1, "-8", -8, "42", 42), 0, 2},
+		{NewTS("1", 1, "-8", -8, "42", 42), 0, 2},
+	}
+	for _, c := range cases {
+		callback := func(k, v interface{}) bool {
+			value := v.(int)
+			c.counter++
+			return value > 0
+		}
+		c.h.Each(callback)
+		if c.counter != c.expected {
+			t.Errorf("Expected %v. Got %v.", c.expected, c.counter)
+		}
+	}
 }
 
 func TestLen(t *testing.T) {
