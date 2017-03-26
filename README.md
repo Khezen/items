@@ -142,6 +142,14 @@ package example
 
 import "github.com/khezen/struct/hashmap"
 
-hm := hashmap.New("1", 1, "42", 42, "-8", -8)
-threadsafeHm := hashmap.NewTS("1", 1, "42", 42, "-8", -8)
+hm := hashmap.New(
+	"1", 1,
+	"42", 42,
+	"-8", -8,
+)
+threadsafeHm := hashmap.NewTS(
+	"1", 1,
+	"42", 42,
+	"-8", -8,
+)
 ```
