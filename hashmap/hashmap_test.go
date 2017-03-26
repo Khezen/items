@@ -128,43 +128,108 @@ func TestKeyOf(t *testing.T) {
 
 func TestEach(t *testing.T) {
 	cases := []struct {
-		h                 Interface
-		counter, expected int
+		h    Interface
+		stop bool
 	}{
-		{New("1", 1, "-8", -8, "42", 42), 0, 2},
-		{NewTS("1", 1, "-8", -8, "42", 42), 0, 2},
+		{New("1", 1, "-8", -8, "42", 42), true},
+		{NewTS("1", 1, "-8", -8, "42", 42), false},
 	}
 	for _, c := range cases {
+		count := 0
 		callback := func(k, v interface{}) bool {
-			value := v.(int)
-			c.counter++
-			return value > 0
+			count++
+			return !c.stop
 		}
 		c.h.Each(callback)
-		if c.counter != c.expected {
-			t.Errorf("Expected %v. Got %v.", c.expected, c.counter)
+		if c.stop && count != 1 {
+			t.Errorf("Expected %v. Got %v.", 1, count)
 		}
 	}
 }
 
 func TestLen(t *testing.T) {
-
+	cases := []struct {
+		h   Interface
+		len int
+	}{
+		{New("1", 1, "-8", -8, "42", 42), 3},
+		{NewTS("1", 1, "-8", -8, "42", 42), 3},
+	}
+	for _, c := range cases {
+		length := c.h.Len()
+		if length != c.len {
+			t.Errorf("Expected %v. Got %v.", c.len, length)
+		}
+	}
 }
 
 func TestClear(t *testing.T) {
-
+	cases := []struct {
+		h Interface
+	}{
+		{New("1", 1, "-8", -8, "42", 42)},
+		{NewTS("1", 1, "-8", -8, "42", 42)},
+	}
+	for _, c := range cases {
+		c.h.Clear()
+		if !c.h.IsEmpty() {
+			t.Errorf("map %v should be empty", c.h.String())
+		}
+	}
 }
 
 func TestIsEmpty(t *testing.T) {
-
+	cases := []struct {
+		h     Interface
+		empty bool
+	}{
+		{New("1", 1, "-8", -8, "42", 42), false},
+		{New(), true},
+		{NewTS("1", 1, "-8", -8, "42", 42), false},
+		{NewTS(), true},
+	}
+	for _, c := range cases {
+		empty := c.h.IsEmpty()
+		if empty != c.empty {
+			t.Errorf("Expected %v. Got %v.", c.empty, empty)
+		}
+	}
 }
 
 func TestIsEqual(t *testing.T) {
-
+	cases := []struct {
+		h, t  Interface
+		equal bool
+	}{
+		{New("1", 1, "-8", -8, "42", 42), New("1", 1, "-8", -8), false},
+		{New("1", 1, "-8", -8, "42", 42), New("1", 1, "-8", -8, "42"), false},
+		{New("1", 1, "-8", -8, "42", 42), New("1", 1, "-8", -8, "42", 42), true},
+		{NewTS("1", 1, "-8", -8, "42", 42), NewTS("1", 1, "-8", -8), false},
+		{NewTS("1", 1, "-8", -8, "42", 42), NewTS("1", 1, "-8", -8, "42"), false},
+		{NewTS("1", 1, "-8", -8, "42", 42), NewTS("1", 1, "-8", -8, "42", 42), true},
+	}
+	for _, c := range cases {
+		equal := c.h.IsEqual(c.t)
+		if equal != c.equal {
+			t.Errorf("Expected %v. Got %v.", c.equal, equal)
+		}
+	}
 }
 
-func TestSting(t *testing.T) {
-
+func TestString(t *testing.T) {
+	cases := []struct {
+		h   Interface
+		str string
+	}{
+		{New("1", 1, "-8", -8, "42", 42), "[1:1 -8:-8 42:42]"},
+		{NewTS("1", 1, "-8", -8, "42", 42), "[1:1 -8:-8 42:42]"},
+	}
+	for _, c := range cases {
+		str := c.h.String()
+		if str != c.str {
+			t.Errorf("Expected %v. Got %v.", c.str, str)
+		}
+	}
 }
 
 func TestKeys(t *testing.T) {
