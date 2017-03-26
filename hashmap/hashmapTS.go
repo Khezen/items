@@ -10,9 +10,9 @@ type hashmapTS struct {
 }
 
 // NewTS creates a new thread safe hashmap
-func NewTS() Interface {
+func NewTS(pairs ...interface{}) Interface {
 	return &hashmapTS{
-		*New().(*hashmap),
+		*New(pairs...).(*hashmap),
 		sync.RWMutex{},
 	}
 }

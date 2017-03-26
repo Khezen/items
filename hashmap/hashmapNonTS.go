@@ -10,10 +10,15 @@ type hashmap struct {
 }
 
 // New creates a new hashmap
-func New() Interface {
-	return &hashmap{
+func New(pairs ...interface{}) Interface {
+	h := &hashmap{
 		m: make(map[interface{}]interface{}),
 	}
+	length := len(pairs)
+	for i := 0; i < length-1; i += 2 {
+		h.m[pairs[i]] = pairs[i+1]
+	}
+	return h
 }
 
 func (h *hashmap) Get(k interface{}) (interface{}, error) {
