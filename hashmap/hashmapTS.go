@@ -71,7 +71,7 @@ func (h *hashmapTS) Clear() {
 	h.hashmap.Clear()
 }
 
-func (h *hashmapTS) IsEmpy() bool {
+func (h *hashmapTS) IsEmpty() bool {
 	h.l.RLock()
 	defer h.l.RUnlock()
 	return h.hashmap.IsEmpty()
