@@ -305,5 +305,16 @@ func TestMap(t *testing.T) {
 
 }
 func TestCopy(t *testing.T) {
-
+	cases := []struct {
+		h Interface
+	}{
+		{New("1", 1, "42", 42, "-8", -8)},
+		{NewTS("1", 1, "42", 42, "-8", -8)},
+	}
+	for _, c := range cases {
+		cpy := c.h.Copy()
+		if !cpy.IsEqual(c.h) {
+			t.Errorf("Expected %v. Got %v.", c.h.String(), cpy.String())
+		}
+	}
 }
