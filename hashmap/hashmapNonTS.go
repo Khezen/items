@@ -2,7 +2,6 @@ package hashmap
 
 import (
 	"fmt"
-	"strings"
 )
 
 type hashmap struct {
@@ -114,12 +113,7 @@ func (h *hashmap) IsEqual(t Interface) bool {
 }
 
 func (h *hashmap) String() string {
-	str := ""
-	h.Each(func(k, v interface{}) bool {
-		str = str + fmt.Sprintf("%v:%v ", k, v)
-		return true
-	})
-	return fmt.Sprintf("[%v]", strings.Trim(str, " "))
+	return fmt.Sprintf("%v", h.m)
 }
 
 func (h *hashmap) Keys() []interface{} {

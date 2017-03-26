@@ -1,6 +1,7 @@
 package hashmap
 
 import (
+	"fmt"
 	"github.com/khezen/check"
 	"testing"
 )
@@ -218,29 +219,88 @@ func TestIsEqual(t *testing.T) {
 
 func TestString(t *testing.T) {
 	cases := []struct {
-		h   Interface
-		str string
+		h Interface
 	}{
-		{New("1", 1, "-8", -8, "42", 42), "[1:1 -8:-8 42:42]"},
-		{NewTS("1", 1, "-8", -8, "42", 42), "[1:1 -8:-8 42:42]"},
+		{New("1", 1)},
+		{NewTS("1", 1)},
 	}
 	for _, c := range cases {
 		str := c.h.String()
-		if str != c.str {
-			t.Errorf("Expected %v. Got %v.", c.str, str)
+		if str != fmt.Sprintf("%v", c.h.Map()) {
+			t.Errorf("Expected %v. Got %v.", c.h.Map(), str)
 		}
 	}
 }
 
 func TestKeys(t *testing.T) {
-
+	keys := []interface{}{"1", "42", "-8"}
+	cases := []struct {
+		h    Interface
+		keys []interface{}
+	}{
+		{New("1", 1, "42", 42, "-8", -8), keys},
+		{NewTS("1", 1, "42", 42, "-8", -8), keys},
+	}
+	for _, c := range cases {
+		keys := c.h.Keys()
+		for _, k := range keys {
+			has := false
+			for _, l := range c.keys {
+				if k == l {
+					has = true
+					break
+				}
+			}
+			if !has {
+				t.Errorf("Expected %v. Got %v.", c.keys, keys)
+			}
+		}
+	}
 }
 
 func TestValues(t *testing.T) {
-
+	values := []interface{}{1, 42, -8}
+	cases := []struct {
+		h      Interface
+		values []interface{}
+	}{
+		{New("1", 1, "42", 42, "-8", -8), values},
+		{NewTS("1", 1, "42", 42, "-8", -8), values},
+	}
+	for _, c := range cases {
+		values := c.h.Values()
+		for _, v := range values {
+			has := false
+			for _, w := range c.values {
+				if v == w {
+					has = true
+					break
+				}
+			}
+			if !has {
+				t.Errorf("Expected %v. Got %v.", c.values, values)
+			}
+		}
+	}
 }
 
 func TestMap(t *testing.T) {
+	m := map[interface{}]interface{}{"1": 1, "42": 42, "-8": -8}
+	cases := []struct {
+		h Interface
+		m map[interface{}]interface{}
+	}{
+		{New("1", 1, "42", 42, "-8", -8), m},
+		{NewTS("1", 1, "42", 42, "-8", -8), m},
+	}
+	for _, c := range cases {
+		m := c.h.Map()
+		for k, v := range m {
+			if v != c.m[k] {
+				t.Errorf("Expected %v. Got %v.", c.m, m)
+			}
+		}
+	}
 
 }
 func TestCopy(t *testing.T) {
