@@ -381,7 +381,7 @@ func TestSlice(t *testing.T) {
 	}
 }
 
-func TestCopy(t *testing.T) {
+func TestCopySet(t *testing.T) {
 	cases := []struct {
 		set Interface
 	}{

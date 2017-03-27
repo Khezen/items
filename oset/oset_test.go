@@ -2,7 +2,9 @@ package oset
 
 import (
 	"github.com/khezen/check"
+	"github.com/khezen/struct/array"
 	"github.com/khezen/struct/collection"
+	"github.com/khezen/struct/set"
 	"testing"
 )
 
@@ -551,7 +553,24 @@ func TestSlice(t *testing.T) {
 	}
 }
 
-func TestCopy(t *testing.T) {
+func TestCopyOset(t *testing.T) {
+	cases := []struct {
+		oset Interface
+	}{
+		{New(1, 42, -8)},
+		{New(-66, 1000, 32)},
+		{NewTS(1, 42, -8)},
+		{NewTS(-66, 1000, 32)},
+	}
+	for _, c := range cases {
+		cpy := c.oset.CopyOset()
+		if !cpy.IsEqual(c.oset) {
+			t.Errorf("Expected %v. Got %v.", c.oset.Slice(), cpy.Slice())
+		}
+	}
+}
+
+func TestCopyArr(t *testing.T) {
 	cases := []struct {
 		oset Interface
 	}{
@@ -562,6 +581,23 @@ func TestCopy(t *testing.T) {
 	}
 	for _, c := range cases {
 		cpy := c.oset.CopyArr()
+		if !cpy.IsEqual(c.oset) {
+			t.Errorf("Expected %v. Got %v.", c.oset.Slice(), cpy.Slice())
+		}
+	}
+}
+
+func TestCopySet(t *testing.T) {
+	cases := []struct {
+		oset Interface
+	}{
+		{New(1, 42, -8)},
+		{New(-66, 1000, 32)},
+		{NewTS(1, 42, -8)},
+		{NewTS(-66, 1000, 32)},
+	}
+	for _, c := range cases {
+		cpy := c.oset.CopySet()
 		if !cpy.IsEqual(c.oset) {
 			t.Errorf("Expected %v. Got %v.", c.oset.Slice(), cpy.Slice())
 		}
@@ -581,6 +617,38 @@ func TestCopyCollection(t *testing.T) {
 		cpy := c.oset.CopyCollection()
 		if !cpy.IsEqual(c.oset) {
 			t.Errorf("Expected %v. Got %v.", c.oset.Slice(), cpy.Slice())
+		}
+	}
+}
+
+func TestArr(t *testing.T) {
+	cases := []struct {
+		s Interface
+		a array.Interface
+	}{
+		{New(1, 42, -8), array.New(1, 42, -8)},
+		{NewTS(1, 42, -8), array.NewTS(1, 42, -8)},
+	}
+	for _, c := range cases {
+		a := c.s.Arr()
+		if !a.IsEqual(c.a) {
+			t.Errorf("Expected %v. Got %v.", c.a, a)
+		}
+	}
+}
+
+func TestSet(t *testing.T) {
+	cases := []struct {
+		os Interface
+		s  set.Interface
+	}{
+		{New(1, 42, -8), set.New(1, 42, -8)},
+		{NewTS(1, 42, -8), set.NewTS(1, 42, -8)},
+	}
+	for _, c := range cases {
+		s := c.os.Set()
+		if !s.IsEqual(c.s) {
+			t.Errorf("Expected %v. Got %v.", c.s, s)
 		}
 	}
 }
