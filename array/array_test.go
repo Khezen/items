@@ -599,3 +599,21 @@ func TestExclusion(t *testing.T) {
 		}
 	}
 }
+
+func TestSort(t *testing.T) {
+	less := func(slice []interface{}, i, j int) bool {
+		return slice[i].(int) >= slice[j].(int)
+	}
+	cases := []struct {
+		array, sorted Sortable
+	}{
+		{NewSortableArray(less, 1, 42, -8), NewSortableArray(less, 42, 1, -8)},
+		{NewSortableArrayTS(less, 1, 42, -8), NewSortableArrayTS(less, 42, 1, -8)},
+	}
+	for _, c := range cases {
+		c.array.Sort()
+		if !c.array.IsEqual(c.sorted) {
+			t.Errorf("Expected %v. Got %v", c.sorted.String(), c.array.String())
+		}
+	}
+}

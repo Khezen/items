@@ -6,14 +6,14 @@ import (
 
 // Sortable is the interface for sortable arrays
 type arraySortTS struct {
-	arrayTS
-	less func(i, j int) bool
+	*arrayTS
+	less func(slice []interface{}, i, j int) bool
 }
 
 // NewSortableArrayTS creates an array that expose Sort method
-func NewSortableArrayTS(less func(i, j int) bool, items ...interface{}) Sortable {
-	return &arraySort{
-		*(NewTS(items...).(*array)),
+func NewSortableArrayTS(less func(slice []interface{}, i, j int) bool, items ...interface{}) Sortable {
+	return &arraySortTS{
+		(NewTS(items...).(*arrayTS)),
 		less,
 	}
 }
@@ -21,11 +21,9 @@ func NewSortableArrayTS(less func(i, j int) bool, items ...interface{}) Sortable
 func (a *arraySortTS) Less(i, j int) bool {
 	a.arrayTS.l.RLock()
 	defer a.arrayTS.l.RUnlock()
-	return a.less(i, j)
+	return a.less(a.arrayTS.s, i, j)
 }
 
 func (a *arraySortTS) Sort() {
-	a.arrayTS.l.RLock()
-	defer a.arrayTS.l.RUnlock()
-	sort.Sort(sort.Interface(a))
+	sort.Sort(a)
 }
