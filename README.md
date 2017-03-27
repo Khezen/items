@@ -118,7 +118,7 @@ s := set.New(0, 2, -4, 10)
 threadsafeS := set.NewTS(0, 2, -4, 10)
 ```
 
-# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/set) Ordered Set
+# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/oset) Ordered Set
 
 `
 import "github.com/khezen/struct/oset"
