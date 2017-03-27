@@ -241,8 +241,7 @@ func TestSwap(t *testing.T) {
 		{NewTS(1, 42, -8), NewTS(1, 42, -8), 1, -1, true},
 	}
 	for _, c := range cases {
-		err := c.array.Swap(c.i, c.j)
-		testErr(err, c.expectErr, t)
+		c.array.Swap(c.i, c.j)
 		if !c.array.IsEqual(c.expected) {
 			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), c.array.Slice())
 		}

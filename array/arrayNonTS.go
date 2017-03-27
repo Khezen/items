@@ -93,18 +93,17 @@ func (a *array) IndexOf(item interface{}) (int, error) {
 	return -1, fmt.Errorf("not found")
 }
 
-func (a *array) Swap(i, j int) error {
+func (a *array) Swap(i, j int) {
 	itemi, err := a.Get(i)
 	if err != nil {
-		return err
+		return
 	}
 	itemj, err := a.Get(j)
 	if err != nil {
-		return err
+		return
 	}
 	a.ReplaceAt(i, itemj)
 	a.ReplaceAt(j, itemi)
-	return nil
 }
 
 func (a *array) Has(items ...interface{}) bool {

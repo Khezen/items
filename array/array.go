@@ -15,7 +15,7 @@ type Interface interface {
 	RemoveAt(i int) (interface{}, error)
 	ReplaceAt(i int, substitute interface{}) (interface{}, error)
 	IndexOf(interface{}) (int, error)
-	Swap(i, j int) error
+	Swap(i, j int)
 
 	SubArray(i, j int) (Interface, error)
 	Copy() Interface

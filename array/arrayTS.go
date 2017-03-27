@@ -75,10 +75,10 @@ func (a *arrayTS) IndexOf(item interface{}) (int, error) {
 	return a.array.IndexOf(item)
 }
 
-func (a *arrayTS) Swap(i, j int) error {
+func (a *arrayTS) Swap(i, j int) {
 	a.l.Lock()
 	defer a.l.Unlock()
-	return a.array.Swap(i, j)
+	a.array.Swap(i, j)
 }
 
 // Has looks for the existence of items passed. It returns false if nothing is
