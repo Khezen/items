@@ -2,6 +2,7 @@ package oset
 
 import (
 	"github.com/khezen/struct/array"
+	"github.com/khezen/struct/set"
 )
 
 // Interface describe an ordered set
@@ -11,4 +12,7 @@ type Interface interface {
 	IsSuperset(s Interface) bool
 	CopyOset() Interface
 	Subset(i, j int) (Interface, error)
+	Set() set.Interface
+	CopySet() set.Interface
+	Arr() array.Interface
 }

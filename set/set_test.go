@@ -60,7 +60,7 @@ func TestPop(t *testing.T) {
 	}
 }
 
-func TestSetIsSubset(t *testing.T) {
+func TestIsSubset(t *testing.T) {
 	cases := []struct {
 		s, sub Interface
 		isSub  bool
@@ -78,7 +78,7 @@ func TestSetIsSubset(t *testing.T) {
 	}
 }
 
-func TestSetIsSuperset(t *testing.T) {
+func TestIsSuperset(t *testing.T) {
 	cases := []struct {
 		s, sub Interface
 		isSub  bool

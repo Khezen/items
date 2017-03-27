@@ -116,11 +116,11 @@ func (s *oset) IsEqual(t collection.Interface) bool {
 }
 
 func (s *oset) IsSubset(t Interface) bool {
-	return s.s.IsSubset(t.(set.Interface))
+	return s.s.IsSubset(t.Set())
 }
 
 func (s *oset) IsSuperset(t Interface) bool {
-	return s.s.IsSuperset(t.(set.Interface))
+	return s.s.IsSuperset(t.Set())
 }
 
 func (s *oset) Merge(t collection.Interface) {
@@ -167,6 +167,18 @@ func (s *oset) CopyArr() array.Interface {
 	return s.a.CopyArr()
 }
 
+func (s *oset) CopySet() set.Interface {
+	return s.s.CopySet()
+}
+
 func (s *oset) CopyCollection() collection.Interface {
 	return s.CopyOset()
+}
+
+func (s *oset) Arr() array.Interface {
+	return s.a
+}
+
+func (s *oset) Set() set.Interface {
+	return s.s
 }

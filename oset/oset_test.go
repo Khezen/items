@@ -372,6 +372,42 @@ func TestIsEqual(t *testing.T) {
 	}
 }
 
+func TestIsSubset(t *testing.T) {
+	cases := []struct {
+		s, sub Interface
+		isSub  bool
+	}{
+		{New("1", "2", "3", "4"), New("1", "2", "3"), true},
+		{New("1", "2", "3"), New("1", "2", "3", "4"), false},
+		{NewTS("1", "2", "3", "4"), NewTS("1", "2", "3"), true},
+		{NewTS("1", "2", "3"), NewTS("1", "2", "3", "4"), false},
+	}
+	for _, c := range cases {
+		ok := c.s.IsSubset(c.sub)
+		if ok != c.isSub {
+			t.Errorf("Expected %v. Got %v", c.isSub, ok)
+		}
+	}
+}
+
+func TestIsSuperset(t *testing.T) {
+	cases := []struct {
+		s, sub Interface
+		isSub  bool
+	}{
+		{New("1", "2", "3", "4"), New("1", "2", "3"), false},
+		{New("1", "2", "3"), New("1", "2", "3", "4"), true},
+		{NewTS("1", "2", "3", "4"), NewTS("1", "2", "3"), false},
+		{NewTS("1", "2", "3"), NewTS("1", "2", "3", "4"), true},
+	}
+	for _, c := range cases {
+		ok := c.s.IsSuperset(c.sub)
+		if ok != c.isSub {
+			t.Errorf("Expected %v. Got %v", c.isSub, ok)
+		}
+	}
+}
+
 func TestMerge(t *testing.T) {
 	cases := []struct {
 		oset, toBeMerged, expected Interface

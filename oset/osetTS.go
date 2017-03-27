@@ -3,6 +3,7 @@ package oset
 import (
 	"github.com/khezen/struct/array"
 	"github.com/khezen/struct/collection"
+	"github.com/khezen/struct/set"
 	"sync"
 )
 
@@ -212,6 +213,12 @@ func (s *osetTS) CopyArr() array.Interface {
 	s.l.RLock()
 	defer s.l.RUnlock()
 	return NewTS(s.oset.Slice()...)
+}
+
+func (s *osetTS) CopySet() set.Interface {
+	s.l.RLock()
+	defer s.l.RUnlock()
+	return set.NewTS(s.Slice()...)
 }
 
 func (s *osetTS) CopyCollection() collection.Interface {
