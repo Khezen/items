@@ -602,13 +602,13 @@ func TestExclusion(t *testing.T) {
 
 func TestSort(t *testing.T) {
 	less := func(slice []interface{}, i, j int) bool {
-		return slice[i].(int) >= slice[j].(int)
+		return slice[i].(int) < slice[j].(int)
 	}
 	cases := []struct {
 		array, sorted Sortable
 	}{
-		{NewSortableArray(less, 1, 42, -8), NewSortableArray(less, 42, 1, -8)},
-		{NewSortableArrayTS(less, 1, 42, -8), NewSortableArrayTS(less, 42, 1, -8)},
+		{NewSortableArray(less, 1, 42, -8), NewSortableArray(less, -8, 1, 42)},
+		{NewSortableArrayTS(less, 1, 42, -8), NewSortableArrayTS(less, -8, 1, 42)},
 	}
 	for _, c := range cases {
 		c.array.Sort()

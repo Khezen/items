@@ -82,19 +82,11 @@ import "github.com/khezen/struct/array"
 arr := array.New(0, 2, -4, 10)
 threadsafeArr := array.NewTS(0, 2, -4, 10)
 
-sortedArr := array.NewSorted(
-	func(slice, i,j int) {
-		return slice[i] >= slice[j]
-	},
-	0, 2, -4, 10
-)
-
-threadsafeSortedArr := array.NewSortedTS(
-	func(slice, i,j int) {
-		return slice[i] >= slice[j]
-	},
-	0, 2, -4, 10
-)
+less := func(slice []interface{}, i, j int) bool {
+	return slice[i].(int) < slice[j].(int)
+}
+sortedArr := array.NewSorted(less, 0, 2, -4, 10)
+threadsafeSortedArr := array.NewSortedTS(less,	0, 2, -4, 10)
 ```
 
 
