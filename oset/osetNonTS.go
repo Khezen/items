@@ -112,6 +112,10 @@ func (s *oset) IsEmpty() bool {
 }
 
 func (s *oset) IsEqual(t collection.Interface) bool {
+	if conv, ok := t.(*osetTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	return s.a.IsEqual(t)
 }
 
