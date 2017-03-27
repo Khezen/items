@@ -607,8 +607,8 @@ func TestSort(t *testing.T) {
 	cases := []struct {
 		array, sorted Sortable
 	}{
-		{NewSortableArray(less, 1, 42, -8), NewSortableArray(less, -8, 1, 42)},
-		{NewSortableArrayTS(less, 1, 42, -8), NewSortableArrayTS(less, -8, 1, 42)},
+		{NewSorted(less, 1, 42, -8), NewSorted(less, -8, 1, 42)},
+		{NewSortedTS(less, 1, 42, -8), NewSortedTS(less, -8, 1, 42)},
 	}
 	for _, c := range cases {
 		c.array.Sort()
