@@ -492,7 +492,7 @@ func TestCopy(t *testing.T) {
 		{NewTS(-66, 1000, 32)},
 	}
 	for _, c := range cases {
-		cpy := c.array.Copy()
+		cpy := c.array.CopyArr()
 		if !cpy.IsEqual(c.array) {
 			t.Errorf("Expected %v. Got %v.", c.array.Slice(), cpy.Slice())
 		}

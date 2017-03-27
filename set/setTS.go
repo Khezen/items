@@ -105,7 +105,7 @@ func (s *setTS) Slice() []interface{} {
 }
 
 // Copy returns a new set with a copy of s.
-func (s *setTS) Copy() Interface {
+func (s *setTS) CopySet() Interface {
 	s.l.RLock()
 	defer s.l.RUnlock()
 	u := NewTS()
@@ -131,5 +131,5 @@ func (s *setTS) Retain(t collection.Interface) {
 }
 
 func (s *setTS) CopyCollection() collection.Interface {
-	return s.Copy()
+	return s.CopySet()
 }

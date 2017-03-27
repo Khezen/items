@@ -138,7 +138,7 @@ func (s *set) Each(f func(item interface{}) bool) {
 }
 
 // Copy returns a new set with a copy of s.
-func (s *set) Copy() Interface {
+func (s *set) CopySet() Interface {
 	u := New()
 	for item := range s.m {
 		u.Add(item)
@@ -196,5 +196,5 @@ func (s *set) Retain(t collection.Interface) {
 }
 
 func (s *set) CopyCollection() collection.Interface {
-	return s.Copy()
+	return s.CopySet()
 }

@@ -169,7 +169,7 @@ func (a *arrayTS) Slice() []interface{} {
 }
 
 // Copy returns a new arrayTS with a copy of s.
-func (a *arrayTS) Copy() Interface {
+func (a *arrayTS) CopyArr() Interface {
 	a.l.RLock()
 	defer a.l.RUnlock()
 	return NewTS(a.s...)
@@ -189,5 +189,5 @@ func (a *arrayTS) SubArray(i, j int) (Interface, error) {
 }
 
 func (a *arrayTS) CopyCollection() collection.Interface {
-	return a.Copy()
+	return a.CopyArr()
 }

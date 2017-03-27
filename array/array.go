@@ -18,5 +18,5 @@ type Interface interface {
 	Swap(i, j int)
 
 	SubArray(i, j int) (Interface, error)
-	Copy() Interface
+	CopyArr() Interface
 }
