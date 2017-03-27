@@ -99,8 +99,8 @@ func (a *arrayTS) Has(items ...interface{}) bool {
 // array member. Traversal will continue until all items in the arrayTS have been
 // visited, or if the closure returns false.
 func (a *arrayTS) Each(f func(item interface{}) bool) {
-	a.l.Lock()
-	defer a.l.Unlock()
+	a.l.RLock()
+	defer a.l.RUnlock()
 	a.array.Each(f)
 }
 

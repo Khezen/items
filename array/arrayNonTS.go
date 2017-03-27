@@ -167,6 +167,10 @@ func (a *array) IsEqual(t collection.Interface) bool {
 // Merge is like Union, however it modifies the current array it's applied on
 // with the given t array.
 func (a *array) Merge(t collection.Interface) {
+	if conv, ok := t.(*arrayTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	t.Each(func(item interface{}) bool {
 		if !a.Has(item) {
 			a.Add(item)
@@ -178,10 +182,18 @@ func (a *array) Merge(t collection.Interface) {
 // it's not the opposite of Merge.
 // Separate removes the array items containing in t from array s. Please aware that
 func (a *array) Separate(t collection.Interface) {
+	if conv, ok := t.(*arrayTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	a.Remove(t.Slice()...)
 }
 
 func (a *array) Retain(t collection.Interface) {
+	if conv, ok := t.(*arrayTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	arr := make([]interface{}, 0, a.Len())
 	a.Each(func(item interface{}) bool {
 		if t.Has(item) {

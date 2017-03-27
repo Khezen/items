@@ -120,10 +120,18 @@ func (s *oset) IsEqual(t collection.Interface) bool {
 }
 
 func (s *oset) IsSubset(t Interface) bool {
+	if conv, ok := t.(*osetTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	return s.s.IsSubset(t.Set())
 }
 
 func (s *oset) IsSuperset(t Interface) bool {
+	if conv, ok := t.(*osetTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	return s.s.IsSuperset(t.Set())
 }
 

@@ -111,6 +111,10 @@ func (s *set) IsEqual(t collection.Interface) bool {
 
 // IsSubset tests whether t is a subset of s.
 func (s *set) IsSubset(t Interface) (subset bool) {
+	if conv, ok := t.(*setTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	subset = true
 
 	t.Each(func(item interface{}) bool {
@@ -123,6 +127,10 @@ func (s *set) IsSubset(t Interface) (subset bool) {
 
 // IsSuperset tests whether t is a superset of s.
 func (s *set) IsSuperset(t Interface) bool {
+	if conv, ok := t.(*setTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	return t.IsSubset(s)
 }
 
@@ -171,6 +179,10 @@ func (s *set) Slice() []interface{} {
 // Merge is like Union, however it modifies the current set it's applied on
 // with the given t set.
 func (s *set) Merge(t collection.Interface) {
+	if conv, ok := t.(*setTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	t.Each(func(item interface{}) bool {
 		s.m[item] = keyExists
 		return true
@@ -180,11 +192,19 @@ func (s *set) Merge(t collection.Interface) {
 // it's not the opposite of Merge.
 // Separate removes the set items containing in t from set s.
 func (s *set) Separate(t collection.Interface) {
+	if conv, ok := t.(*setTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	s.Remove(t.Slice()...)
 }
 
 // Retain removes the set items not containing in t from set s.
 func (s *set) Retain(t collection.Interface) {
+	if conv, ok := t.(*setTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	items := make(map[interface{}]struct{})
 	t.Each(func(item interface{}) bool {
 		if s.Has(item) {
