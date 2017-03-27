@@ -66,6 +66,12 @@ type Interface interface {
 	Copy() Interface
 }
 
+type Sortable interface {
+	Interface
+	Sort()
+	Less(i, j int) bool
+}
+
 ```
 
 ```golang
@@ -75,6 +81,12 @@ import "github.com/khezen/struct/array"
 
 arr := array.New(0, 2, -4, 10)
 threadsafeArr := array.NewTS(0, 2, -4, 10)
+
+less := func(slice []interface{}, i, j int) bool {
+	return slice[i].(int) < slice[j].(int)
+}
+sortedArr := array.NewSorted(less, 0, 2, -4, 10)
+threadsafeSortedArr := array.NewSortedTS(less,	0, 2, -4, 10)
 ```
 
 

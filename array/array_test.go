@@ -241,8 +241,7 @@ func TestSwap(t *testing.T) {
 		{NewTS(1, 42, -8), NewTS(1, 42, -8), 1, -1, true},
 	}
 	for _, c := range cases {
-		err := c.array.Swap(c.i, c.j)
-		testErr(err, c.expectErr, t)
+		c.array.Swap(c.i, c.j)
 		if !c.array.IsEqual(c.expected) {
 			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), c.array.Slice())
 		}
@@ -597,6 +596,24 @@ func TestExclusion(t *testing.T) {
 		result := collection.Exclusion(c.arrays...)
 		if c.expected != nil && !result.IsEqual(c.expected) {
 			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), result.Slice())
+		}
+	}
+}
+
+func TestSort(t *testing.T) {
+	less := func(slice []interface{}, i, j int) bool {
+		return slice[i].(int) < slice[j].(int)
+	}
+	cases := []struct {
+		array, sorted Sortable
+	}{
+		{NewSorted(less, 1, 42, -8), NewSorted(less, -8, 1, 42)},
+		{NewSortedTS(less, 1, 42, -8), NewSortedTS(less, -8, 1, 42)},
+	}
+	for _, c := range cases {
+		c.array.Sort()
+		if !c.array.IsEqual(c.sorted) {
+			t.Errorf("Expected %v. Got %v", c.sorted.String(), c.array.String())
 		}
 	}
 }
