@@ -180,7 +180,7 @@ func (s *osetTS) SubArray(i, j int) (array.Interface, error) {
 func (s *osetTS) Subset(i, j int) (Interface, error) {
 	s.l.RLock()
 	defer s.l.RUnlock()
-	os, err := s.Subset(i, j)
+	os, err := s.oset.Subset(i, j)
 	if err != nil {
 		return nil, err
 	}

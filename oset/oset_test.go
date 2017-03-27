@@ -471,6 +471,39 @@ func TestRetain(t *testing.T) {
 	}
 }
 
+func TestSubset(t *testing.T) {
+	cases := []struct {
+		s, expected Interface
+		i, j        int
+		expectErr   bool
+	}{
+		{New(1, 42, -8, 12), New(42, -8), 1, 2, false},
+		{New(1, 42, -8, 12), nil, -1, 2, true},
+		{New(1, 42, -8, 12), nil, 1000, 2, true},
+		{New(1, 42, -8, 12), nil, 1, -2, true},
+		{New(1, 42, -8, 12), nil, 1, 1000, true},
+		{New(1, 42, -8, 12), nil, 2, 1, true},
+		{NewTS(1, 42, -8, 12), NewTS(42, -8), 1, 2, false},
+		{NewTS(1, 42, -8, 12), nil, -1, 2, true},
+		{NewTS(1, 42, -8, 12), nil, 1000, 2, true},
+		{NewTS(1, 42, -8, 12), nil, 1, -2, true},
+		{NewTS(1, 42, -8, 12), nil, 1, 1000, true},
+		{NewTS(1, 42, -8, 12), nil, 2, 1, true},
+	}
+	for _, c := range cases {
+		s, err := c.s.Subset(c.i, c.j)
+		testErr(err, c.expectErr, t)
+		if !c.expectErr {
+			if !s.IsEqual(c.expected) {
+				t.Errorf("Expected %v. Got %v.", c.expected.Slice(), s.Slice())
+			}
+			if s.IsEqual(c.s) {
+				t.Errorf("c.array should not be modified")
+			}
+		}
+	}
+}
+
 func TestString(t *testing.T) {
 	cases := []struct {
 		oset     Interface
