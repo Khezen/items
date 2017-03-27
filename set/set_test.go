@@ -391,7 +391,7 @@ func TestCopy(t *testing.T) {
 		{NewTS(-66, 1000, 32)},
 	}
 	for _, c := range cases {
-		cpy := c.set.Copy()
+		cpy := c.set.CopySet()
 		if !cpy.IsEqual(c.set) {
 			t.Errorf("Expected %v. Got %v.", c.set.Slice(), cpy.Slice())
 		}

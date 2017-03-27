@@ -232,10 +232,10 @@ func (a *array) SubArray(i, j int) (Interface, error) {
 }
 
 // Copy returns a new Set with a copy of s.
-func (a *array) Copy() Interface {
+func (a *array) CopyArr() Interface {
 	return New(a.s...)
 }
 
 func (a *array) CopyCollection() collection.Interface {
-	return a.Copy()
+	return a.CopyArr()
 }

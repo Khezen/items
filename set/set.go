@@ -15,7 +15,7 @@ type Interface interface {
 	Pop() interface{}
 	IsSubset(s Interface) bool
 	IsSuperset(s Interface) bool
-	Copy() Interface
+	CopySet() Interface
 }
 
 // helpful to not write everywhere struct{}{}

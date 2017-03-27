@@ -9,4 +9,6 @@ type Interface interface {
 	array.Interface
 	IsSubset(s Interface) bool
 	IsSuperset(s Interface) bool
+	CopyOset() Interface
+	SubSet(i, j int) (Interface, error)
 }
