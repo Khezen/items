@@ -11,6 +11,7 @@ type oset struct {
 	s set.Interface
 }
 
+// New creates a new ordered set
 func New(items ...interface{}) Interface {
 	s := &oset{
 		array.New(),
@@ -139,7 +140,7 @@ func (s *oset) SubArray(i, j int) (array.Interface, error) {
 	return s.a.SubArray(i, j)
 }
 
-func (s *oset) SubSet(i, j int) (Interface, error) {
+func (s *oset) Subset(i, j int) (Interface, error) {
 	arr, err := s.SubArray(i, j)
 	if err != nil {
 		return nil, err

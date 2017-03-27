@@ -124,7 +124,7 @@ threadsafeS := set.NewTS(0, 2, -4, 10)
 import "github.com/khezen/struct/oset"
 `
 
-Both ~~threadsafe~~ and non-threadsafe implementations of a generic
+Both threadsafe and non-threadsafe implementations of a generic
 ordered set data structure.
 
 ```Golang
@@ -133,7 +133,7 @@ type Interface interface {
 	IsSubset(s Interface) bool
 	IsSuperset(s Interface) bool
 	CopyOset() Interface
-	SubSet(i, j int) (Interface, error)
+	Subset(i, j int) (Interface, error)
 }
 ```
 
@@ -143,6 +143,7 @@ package example
 import "github.com/khezen/struct/oset"
 
 s := oset.New(0, 2, -4, 10)
+threadsafeS := oset.NewTS(0, 2, -4, 10)
 ```
 
 # [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/hashmap) Hashmap

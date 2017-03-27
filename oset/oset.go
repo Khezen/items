@@ -10,5 +10,5 @@ type Interface interface {
 	IsSubset(s Interface) bool
 	IsSuperset(s Interface) bool
 	CopyOset() Interface
-	SubSet(i, j int) (Interface, error)
+	Subset(i, j int) (Interface, error)
 }
