@@ -247,8 +247,8 @@ func TestKeys(t *testing.T) {
 		for _, k := range keys {
 			has := false
 			for _, l := range c.keys {
-				if k == l {
-					has = true
+				has = k == l
+				if has {
 					break
 				}
 			}

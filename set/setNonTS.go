@@ -65,10 +65,10 @@ func (s *set) Has(items ...interface{}) bool {
 }
 
 func (s *set) Replace(item, substitute interface{}) {
-	if s.m[item] == keyExists {
+	if _, ok := s.m[item]; ok {
 		delete(s.m, item)
+		s.m[substitute] = keyExists
 	}
-	s.m[substitute] = keyExists
 }
 
 // Len returns the number of items in a set.
@@ -95,13 +95,14 @@ func (s *set) IsEqual(t collection.Interface) bool {
 	}
 
 	// return false if they are no the same size
-	if sameLen := len(s.m) == t.Len(); !sameLen {
+	if len(s.m) != t.Len() {
 		return false
 	}
 
 	equal := true
 	t.Each(func(item interface{}) bool {
-		_, equal = s.m[item]
+		_, ok := s.m[item]
+		equal = equal && ok
 		return equal // if false, Each() will end
 	})
 
@@ -152,7 +153,7 @@ func (s *set) String() string {
 		t = append(t, fmt.Sprintf("%v", item))
 	}
 
-	return fmt.Sprintf("[%s]", strings.Join(t, ", "))
+	return fmt.Sprintf("[%s]", strings.Join(t, " "))
 }
 
 // Slice returns a slice of all items. There is also StringSlice() and
