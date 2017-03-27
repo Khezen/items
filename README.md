@@ -56,11 +56,11 @@ Abstraction layer over slices exposing utility functions and thread safe impleme
 type Interface interface {
 	collection.Interface
 	Get(i int) (interface{}, error)
-	Insert(i int, item ...interface{}) error
+	Insert(i int, items ...interface{}) error
 	RemoveAt(i int) (interface{}, error)
 	ReplaceAt(i int, substitute interface{}) (interface{}, error)
 	IndexOf(interface{}) (int, error)
-	Swap(i, j int) error
+	Swap(i, j int)
 
 	SubArray(i, j int) (Interface, error)
 	Copy() Interface
@@ -116,6 +116,33 @@ import "github.com/khezen/struct/set"
 
 s := set.New(0, 2, -4, 10)
 threadsafeS := set.NewTS(0, 2, -4, 10)
+```
+
+# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/set) Ordered Set
+
+`
+import "github.com/khezen/struct/oset"
+`
+
+Both ~~threadsafe~~ and non-threadsafe implementations of a generic
+ordered set data structure.
+
+```Golang
+type Interface interface {
+	array.Interface
+	IsSubset(s Interface) bool
+	IsSuperset(s Interface) bool
+	CopyOset() Interface
+	SubSet(i, j int) (Interface, error)
+}
+```
+
+```golang
+package example
+
+import "github.com/khezen/struct/oset"
+
+s := oset.New(0, 2, -4, 10)
 ```
 
 # [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/hashmap) Hashmap
