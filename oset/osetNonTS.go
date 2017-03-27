@@ -15,12 +15,14 @@ type oset struct {
 func New(items ...interface{}) Interface {
 	s := &oset{
 		array.New(),
-		set.New(items...),
+		set.New(),
 	}
-	s.s.Each(func(item interface{}) bool {
-		s.a.Add(item)
-		return true
-	})
+	for _, item := range items {
+		if !s.Has(item) {
+			s.s.Add(item)
+			s.a.Add(item)
+		}
+	}
 	return s
 }
 
@@ -110,7 +112,7 @@ func (s *oset) IsEmpty() bool {
 }
 
 func (s *oset) IsEqual(t collection.Interface) bool {
-	return s.s.IsEqual(t)
+	return s.a.IsEqual(t)
 }
 
 func (s *oset) IsSubset(t Interface) bool {
