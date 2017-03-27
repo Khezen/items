@@ -144,6 +144,12 @@ import "github.com/khezen/struct/oset"
 
 s := oset.New(0, 2, -4, 10)
 threadsafeS := oset.NewTS(0, 2, -4, 10)
+
+less := func(slice []interface{}, i, j int) bool {
+	return slice[i].(int) < slice[j].(int)
+}
+sortedS := oset.NewSorted(less, 0, 2, -4, 10)
+threadsafeSortedS := oset.NewSortedTS(less,	0, 2, -4, 10)
 ```
 
 # [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/hashmap) Hashmap

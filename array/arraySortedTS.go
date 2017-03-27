@@ -10,7 +10,7 @@ type arraySortTS struct {
 	less func(slice []interface{}, i, j int) bool
 }
 
-// NewSortedTS creates an array that expose Sort method
+// NewSortedTS creates a thread safe array that expose Sort method
 func NewSortedTS(less func(slice []interface{}, i, j int) bool, items ...interface{}) Sortable {
 	return &arraySortTS{
 		(NewTS(items...).(*arrayTS)),
