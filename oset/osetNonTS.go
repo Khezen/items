@@ -116,11 +116,19 @@ func (s *oset) IsEqual(t collection.Interface) bool {
 		conv.l.RLock()
 		defer conv.l.RUnlock()
 	}
+	if conv, ok := t.(*osetSortTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	return s.a.IsEqual(t)
 }
 
 func (s *oset) IsSubset(t Interface) bool {
 	if conv, ok := t.(*osetTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
+	if conv, ok := t.(*osetSortTS); ok {
 		conv.l.RLock()
 		defer conv.l.RUnlock()
 	}
@@ -132,20 +140,48 @@ func (s *oset) IsSuperset(t Interface) bool {
 		conv.l.RLock()
 		defer conv.l.RUnlock()
 	}
+	if conv, ok := t.(*osetSortTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	return s.s.IsSuperset(t.Set())
 }
 
 func (s *oset) Merge(t collection.Interface) {
+	if conv, ok := t.(*osetTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
+	if conv, ok := t.(*osetSortTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	s.s.Merge(t)
 	s.a.Merge(t)
 }
 
 func (s *oset) Separate(t collection.Interface) {
+	if conv, ok := t.(*osetTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
+	if conv, ok := t.(*osetSortTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	s.s.Separate(t)
 	s.a.Separate(t)
 }
 
 func (s *oset) Retain(t collection.Interface) {
+	if conv, ok := t.(*osetTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
+	if conv, ok := t.(*osetSortTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	s.s.Retain(t)
 	s.a.Retain(t)
 }

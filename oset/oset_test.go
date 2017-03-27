@@ -383,6 +383,8 @@ func TestIsSubset(t *testing.T) {
 		{New("1", "2", "3"), New("1", "2", "3", "4"), false},
 		{NewTS("1", "2", "3", "4"), NewTS("1", "2", "3"), true},
 		{NewTS("1", "2", "3"), NewTS("1", "2", "3", "4"), false},
+		{NewSortedTS(nil, "1", "2", "3", "4"), NewSortedTS(nil, "1", "2", "3"), true},
+		{NewSortedTS(nil, "1", "2", "3"), NewSortedTS(nil, "1", "2", "3", "4"), false},
 	}
 	for _, c := range cases {
 		ok := c.s.IsSubset(c.sub)
@@ -401,6 +403,8 @@ func TestIsSuperset(t *testing.T) {
 		{New("1", "2", "3"), New("1", "2", "3", "4"), true},
 		{NewTS("1", "2", "3", "4"), NewTS("1", "2", "3"), false},
 		{NewTS("1", "2", "3"), NewTS("1", "2", "3", "4"), true},
+		{NewSortedTS(nil, "1", "2", "3", "4"), NewSortedTS(nil, "1", "2", "3"), false},
+		{NewSortedTS(nil, "1", "2", "3"), NewSortedTS(nil, "1", "2", "3", "4"), true},
 	}
 	for _, c := range cases {
 		ok := c.s.IsSuperset(c.sub)
@@ -422,6 +426,10 @@ func TestMerge(t *testing.T) {
 		{NewTS(1, 42), NewTS(-8, nil), NewTS(1, 42, -8, nil)},
 		{NewTS(1, 42), NewTS(), NewTS(1, 42)},
 		{NewTS(), NewTS(), NewTS()},
+		{NewSortedTS(nil, 1, 42), NewSortedTS(nil, -8), NewSortedTS(nil, 1, 42, -8)},
+		{NewSortedTS(nil, 1, 42), NewSortedTS(nil, -8, nil), NewSortedTS(nil, 1, 42, -8, nil)},
+		{NewSortedTS(nil, 1, 42), NewSortedTS(nil), NewSortedTS(nil, 1, 42)},
+		{NewSortedTS(nil), NewSortedTS(nil), NewSortedTS(nil)},
 	}
 	for _, c := range cases {
 		c.oset.Merge(c.toBeMerged)
@@ -443,6 +451,10 @@ func TestSeparate(t *testing.T) {
 		{NewTS(1, 42, -8), NewTS(1, 42, nil), NewTS(-8)},
 		{NewTS(1, 42, -8), NewTS(), NewTS(1, 42, -8)},
 		{NewTS(), NewTS(), NewTS()},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil, 1, 42), NewSortedTS(nil, -8)},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil, 1, 42, nil), NewSortedTS(nil, -8)},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil), NewSortedTS(nil, 1, 42, -8)},
+		{NewSortedTS(nil), NewSortedTS(nil), NewSortedTS(nil)},
 	}
 	for _, c := range cases {
 		c.oset.Separate(c.toBeMerged)
@@ -464,6 +476,10 @@ func TestRetain(t *testing.T) {
 		{NewTS(1, 42, -8), NewTS(1, -8, 100, nil), NewTS(1, -8)},
 		{NewTS(1, 42, -8), NewTS(), NewTS()},
 		{NewTS(), NewTS(), NewTS()},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil, 1, -8, 100), NewSortedTS(nil, 1, -8)},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil, 1, -8, 100, nil), NewSortedTS(nil, 1, -8)},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil), NewSortedTS(nil)},
+		{NewSortedTS(nil), NewSortedTS(nil), NewSortedTS(nil)},
 	}
 	for _, c := range cases {
 		c.oset.Retain(c.toBeMerged)

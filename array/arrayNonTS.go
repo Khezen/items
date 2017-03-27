@@ -147,6 +147,10 @@ func (a *array) IsEqual(t collection.Interface) bool {
 		conv.l.RLock()
 		defer conv.l.RUnlock()
 	}
+	if conv, ok := t.(*arraySortTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	length := a.Len()
 	if length != t.Len() {
 		return false
@@ -171,6 +175,10 @@ func (a *array) Merge(t collection.Interface) {
 		conv.l.RLock()
 		defer conv.l.RUnlock()
 	}
+	if conv, ok := t.(*arraySortTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	t.Each(func(item interface{}) bool {
 		if !a.Has(item) {
 			a.Add(item)
@@ -186,11 +194,19 @@ func (a *array) Separate(t collection.Interface) {
 		conv.l.RLock()
 		defer conv.l.RUnlock()
 	}
+	if conv, ok := t.(*arraySortTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
 	a.Remove(t.Slice()...)
 }
 
 func (a *array) Retain(t collection.Interface) {
 	if conv, ok := t.(*arrayTS); ok {
+		conv.l.RLock()
+		defer conv.l.RUnlock()
+	}
+	if conv, ok := t.(*arraySortTS); ok {
 		conv.l.RLock()
 		defer conv.l.RUnlock()
 	}

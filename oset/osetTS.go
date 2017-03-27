@@ -100,8 +100,8 @@ func (s *osetTS) Has(items ...interface{}) bool {
 // oset member. Traversal will continue until all items in the osetTS have been
 // visited, or if the closure returns false.
 func (s *osetTS) Each(f func(item interface{}) bool) {
-	s.l.Lock()
-	defer s.l.Unlock()
+	s.l.RLock()
+	defer s.l.RUnlock()
 	s.oset.Each(f)
 }
 

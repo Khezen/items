@@ -363,6 +363,11 @@ func TestIsEqual(t *testing.T) {
 		{NewTS(1, 42, -8), NewTS(), false},
 		{NewTS(1, 42, -8), NewTS(42, 1, -8), false},
 		{NewTS(66, -1000), NewTS(42, 1, 8), false},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil, 1, 42, -8), true},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil, 1, "42", -8), false},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil), false},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil, 42, 1, -8), false},
+		{NewSortedTS(nil, 66, -1000), NewSortedTS(nil, 42, 1, 8), false},
 	}
 	for _, c := range cases {
 		isEqual := c.array.IsEqual(c.toBeCompared)
@@ -384,6 +389,10 @@ func TestMerge(t *testing.T) {
 		{NewTS(1, 42), NewTS(-8, nil), NewTS(1, 42, -8, nil)},
 		{NewTS(1, 42), NewTS(), NewTS(1, 42)},
 		{NewTS(), NewTS(), NewTS()},
+		{NewSortedTS(nil, 1, 42), NewSortedTS(nil, -8), NewSortedTS(nil, 1, 42, -8)},
+		{NewSortedTS(nil, 1, 42), NewSortedTS(nil, -8, nil), NewSortedTS(nil, 1, 42, -8, nil)},
+		{NewSortedTS(nil, 1, 42), NewSortedTS(nil), NewSortedTS(nil, 1, 42)},
+		{NewSortedTS(nil), NewSortedTS(nil), NewSortedTS(nil)},
 	}
 	for _, c := range cases {
 		c.array.Merge(c.toBeMerged)
@@ -405,6 +414,10 @@ func TestSeparate(t *testing.T) {
 		{NewTS(1, 42, -8), NewTS(1, 42, nil), NewTS(-8)},
 		{NewTS(1, 42, -8), NewTS(), NewTS(1, 42, -8)},
 		{NewTS(), NewTS(), NewTS()},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil, 1, 42), NewSortedTS(nil, -8)},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil, 1, 42, nil), NewSortedTS(nil, -8)},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil), NewSortedTS(nil, 1, 42, -8)},
+		{NewSortedTS(nil), NewSortedTS(nil), NewSortedTS(nil)},
 	}
 	for _, c := range cases {
 		c.array.Separate(c.toBeMerged)
@@ -426,6 +439,10 @@ func TestRetain(t *testing.T) {
 		{NewTS(1, 42, -8), NewTS(1, -8, 100, nil), NewTS(1, -8)},
 		{NewTS(1, 42, -8), NewTS(), NewTS()},
 		{NewTS(), NewTS(), NewTS()},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil, 1, -8, 100), NewSortedTS(nil, 1, -8)},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil, 1, -8, 100, nil), NewSortedTS(nil, 1, -8)},
+		{NewSortedTS(nil, 1, 42, -8), NewSortedTS(nil), NewSortedTS(nil)},
+		{NewSortedTS(nil), NewSortedTS(nil), NewSortedTS(nil)},
 	}
 	for _, c := range cases {
 		c.array.Retain(c.toBeMerged)
