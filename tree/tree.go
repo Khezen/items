@@ -1,9 +1,7 @@
 package tree
 
-// Node the root of a tree or sub-tree
+// Node has children
 type Node interface {
-	Value() interface{}
-	SetValue(interface{})
 	Children() []Node
 	Add(...Node)
 	Remove(...Node)
@@ -11,8 +9,15 @@ type Node interface {
 	Each(func(child Node) bool)
 	Len() int
 	Clear()
-	IsEmpty() bool
+	IsLeaf() bool
 	IsEqual(Node) bool
+}
+
+// ValuedNode the root of a tree or sub-tree
+type ValuedNode interface {
+	Node
+	Value() interface{}
+	SetValue(interface{})
 }
 
 // Interface describes a Tree
