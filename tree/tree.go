@@ -1,36 +1,26 @@
 package tree
 
-// Root the root of a tree or sub-tree
-type Root interface {
+// Node the root of a tree or sub-tree
+type Node interface {
 	Value() interface{}
 	SetValue(interface{})
-
-	Childrens() []Child
-	Add(...Child)
-	Remove(...Child)
-	Has(...Child)
-	Each(func(children Child) bool)
-
+	Children() []Node
+	Add(...Node)
+	Remove(...Node)
+	Has(...Node)
+	Each(func(child Node) bool)
 	Len() int
 	Clear()
 	IsEmpty() bool
-	IsEqual(Root) bool
-}
-
-// Child describes the children of a root.
-// Child is also the root of its own sub-tree.
-type Child interface {
-	Root
-	Parent() Root
+	IsEqual(Node) bool
 }
 
 // Interface describes a Tree
 type Interface interface {
-	Root() Root
-	WalkD(func(node Root) bool)
-	WalkB(func(node Root) bool)
-	Has(...Root)
-
+	Root() Node
+	Walk(func(node Node) bool)
+	Has(...Node)
+	Nodes() []Node
 	Values() []interface{}
 	Len() int
 	Clear()
