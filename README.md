@@ -107,12 +107,6 @@ type Interface interface {
 	IsSuperset(s Interface) bool
 	Copy() Interface
 }
-
-type Sorted interface {
-	Interface
-	Sort()
-	Less(i, j int) bool
-}
 ```
 
 ```golang
@@ -143,6 +137,12 @@ type Interface interface {
 	Set() set.Interface
 	CopySet() set.Interface
 	Arr() array.Interface
+}
+
+type Sorted interface {
+	Interface
+	Sort()
+	Less(i, j int) bool
 }
 ```
 
