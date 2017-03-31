@@ -10,7 +10,7 @@ type arraySort struct {
 }
 
 // NewSorted creates an array that expose Sort method
-func NewSorted(less func(slice []interface{}, i, j int) bool, items ...interface{}) Sortable {
+func NewSorted(less func(slice []interface{}, i, j int) bool, items ...interface{}) Sorted {
 	return &arraySort{
 		*(New(items...).(*array)),
 		less,

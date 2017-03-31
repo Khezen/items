@@ -1,7 +1,7 @@
 package array
 
-// Sortable is the interface for sortable arrays
-type Sortable interface {
+// Sorted is the interface for sortable arrays
+type Sorted interface {
 	Interface
 	Sort()
 	Less(i, j int) bool

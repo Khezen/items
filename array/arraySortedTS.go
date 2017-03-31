@@ -4,14 +4,14 @@ import (
 	"sort"
 )
 
-// Sortable is the interface for sortable arrays
+// Sorted is the interface for sortable arrays
 type arraySortTS struct {
 	*arrayTS
 	less func(slice []interface{}, i, j int) bool
 }
 
 // NewSortedTS creates a thread safe array that expose Sort method
-func NewSortedTS(less func(slice []interface{}, i, j int) bool, items ...interface{}) Sortable {
+func NewSortedTS(less func(slice []interface{}, i, j int) bool, items ...interface{}) Sorted {
 	return &arraySortTS{
 		(NewTS(items...).(*arrayTS)),
 		less,

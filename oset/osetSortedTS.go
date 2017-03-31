@@ -4,14 +4,14 @@ import (
 	"sort"
 )
 
-// Sortable is the interface for sortable osets
+// Sorted is the interface for sortable osets
 type osetSortTS struct {
 	*osetTS
 	less func(slice []interface{}, i, j int) bool
 }
 
 // NewSortedTS creates an ordered  thread safe set that expose Sort method
-func NewSortedTS(less func(slice []interface{}, i, j int) bool, items ...interface{}) Sortable {
+func NewSortedTS(less func(slice []interface{}, i, j int) bool, items ...interface{}) Sorted {
 	return &osetSortTS{
 		(NewTS(items...).(*osetTS)),
 		less,
