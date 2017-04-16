@@ -22,20 +22,16 @@ func New(items ...interface{}) Interface {
 // Add includes the specified items (one or more) to the set. The underlying
 // set s is modified. If passed nothing it silently returns.
 func (s *set) Add(items ...interface{}) {
-	if len(items) > 0 {
-		for _, item := range items {
-			s.m[item] = keyExists
-		}
+	for _, item := range items {
+		s.m[item] = keyExists
 	}
 }
 
 // Remove deletes the specified items from the set.  The underlying set s is
 // modified. If passed nothing it silently returns.
 func (s *set) Remove(items ...interface{}) {
-	if len(items) > 0 {
-		for _, item := range items {
-			delete(s.m, item)
-		}
+	for _, item := range items {
+		delete(s.m, item)
 	}
 }
 
