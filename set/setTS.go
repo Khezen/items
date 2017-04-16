@@ -24,17 +24,21 @@ func NewTS(items ...interface{}) Interface {
 // Add includes the specified items (one or more) to the set. The underlying
 // set s is modified. If passed nothing it silently returns.
 func (s *setTS) Add(items ...interface{}) {
-	s.l.Lock()
-	defer s.l.Unlock()
-	s.set.Add(items...)
+	if len(items) > 0 {
+		s.l.Lock()
+		defer s.l.Unlock()
+		s.set.Add(items...)
+	}
 }
 
 // Remove deletes the specified items from the set.  The underlying set s is
 // modified. If passed nothing it silently returns.
 func (s *setTS) Remove(items ...interface{}) {
-	s.l.Lock()
-	defer s.l.Unlock()
-	s.set.Remove(items...)
+	if len(items) > 0 {
+		s.l.Lock()
+		defer s.l.Unlock()
+		s.set.Remove(items...)
+	}
 }
 
 // Pop  deletes and return an item from the set. The underlying set s is
@@ -48,9 +52,12 @@ func (s *setTS) Pop() interface{} {
 // Has looks for the existence of items passed. It returns false if nothing is
 // passed. For multiple items it returns true only if all of  the items exist.
 func (s *setTS) Has(items ...interface{}) bool {
-	s.l.RLock()
-	defer s.l.RUnlock()
-	return s.set.Has(items...)
+	if len(items) > 0 {
+		s.l.RLock()
+		defer s.l.RUnlock()
+		return s.set.Has(items...)
+	}
+	return true
 }
 
 func (s *setTS) Replace(item, substitute interface{}) {

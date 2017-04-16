@@ -50,11 +50,9 @@ func (s *set) Pop() interface{} {
 func (s *set) Has(items ...interface{}) bool {
 	has := true
 	// assume checked for empty item, which not exist
-	if len(items) > 0 {
-		for _, item := range items {
-			if _, has = s.m[item]; !has {
-				break
-			}
+	for _, item := range items {
+		if _, has = s.m[item]; !has {
+			break
 		}
 	}
 	return has
