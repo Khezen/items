@@ -758,7 +758,7 @@ func TestSort(t *testing.T) {
 		return slice[i].(int) < slice[j].(int)
 	}
 	cases := []struct {
-		oset, sorted Sortable
+		oset, sorted Sorted
 	}{
 		{NewSorted(less, 1, 42, -8), NewSorted(less, -8, 1, 42)},
 		{NewSortedTS(less, 1, 42, -8), NewSortedTS(less, -8, 1, 42)},

@@ -66,7 +66,7 @@ type Interface interface {
 	Copy() Interface
 }
 
-type Sortable interface {
+type Sorted interface {
 	Interface
 	Sort()
 	Less(i, j int) bool
@@ -137,6 +137,12 @@ type Interface interface {
 	Set() set.Interface
 	CopySet() set.Interface
 	Arr() array.Interface
+}
+
+type Sorted interface {
+	Interface
+	Sort()
+	Less(i, j int) bool
 }
 ```
 
