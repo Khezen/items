@@ -1,6 +1,6 @@
 [![Build Status](http://img.shields.io/travis/Khezen/struct/master.svg?style=flat-square)](https://travis-ci.org/Khezen/struct) [![codecov](https://img.shields.io/codecov/c/github/Khezen/struct/master.svg?style=flat-square)](https://codecov.io/gh/Khezen/struct)
 
-# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/collection) Collection
+# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/collection) *collection*
 
 `
 import "github.com/khezen/struct/collection"
@@ -44,7 +44,7 @@ func Intersection(collections ...Interface) Interface
 func Exclusion(collections ...Interface) Interface
 ```
 
-# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/array) Array
+# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/array) *array*
 
 `
 import "github.com/khezen/struct/array"
@@ -90,7 +90,7 @@ threadsafeSortedArr := array.NewSortedTS(less,	0, 2, -4, 10)
 ```
 
 
-# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/set) Set
+# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/set) *set*
 
 `
 import "github.com/khezen/struct/set"
@@ -118,7 +118,7 @@ s := set.New(0, 2, -4, 10)
 threadsafeS := set.NewTS(0, 2, -4, 10)
 ```
 
-# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/oset) Ordered Set
+# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/oset) *ordered set*
 
 `
 import "github.com/khezen/struct/oset"
@@ -161,7 +161,7 @@ sortedS := oset.NewSorted(less, 0, 2, -4, 10)
 threadsafeSortedS := oset.NewSortedTS(less,	0, 2, -4, 10)
 ```
 
-# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/hashmap) Hashmap
+# [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/hashmap) *hashmap*
 
 `
 import "github.com/khezen/struct/hashmap"
