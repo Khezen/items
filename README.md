@@ -1,4 +1,4 @@
-[![Build Status](http://img.shields.io/travis/Khezen/struct/master.svg?style=flat-square)](https://travis-ci.org/Khezen/struct) [![codecov](https://img.shields.io/codecov/c/github/Khezen/struct/master.svg?style=flat-square)](https://codecov.io/gh/Khezen/struct)
+[![Build Status](http://img.shields.io/travis/khezen/struct/master.svg?style=flat-square)](https://travis-ci.org/khezen/struct) [![codecov](https://img.shields.io/codecov/c/github/khezen/struct/master.svg?style=flat-square)](https://codecov.io/gh/khezen/struct)
 
 # [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/collection) *collection*
 
