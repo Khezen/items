@@ -2,12 +2,11 @@ package hashmap
 
 import (
 	"fmt"
-	"github.com/khezen/check"
 	"testing"
 )
 
 func testErr(err error, expectErr bool, t *testing.T) {
-	if !check.ErrorExpectation(err, expectErr) {
+	if (expectErr && err == nil) || (!expectErr && err != nil) {
 		t.Errorf(" Error expected? %v. Got: %v.", expectErr, err)
 	}
 }

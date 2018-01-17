@@ -1,11 +1,12 @@
 package array
 
 import (
+	"errors"
 	"fmt"
-	"github.com/khezen/check"
-	"github.com/khezen/struct/collection"
 	"reflect"
 	"strings"
+
+	"github.com/khezen/struct/collection"
 )
 
 // Provides a common array baseline for both threadsafe and non-ts arrays.
@@ -24,7 +25,7 @@ func New(items ...interface{}) Interface {
 }
 
 func (a *array) Get(i int) (interface{}, error) {
-	err := check.Index(i, a.Len())
+	err := a.checkIndex(i)
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +39,7 @@ func (a *array) Add(items ...interface{}) {
 }
 
 func (a *array) Insert(i int, items ...interface{}) error {
-	err := check.Index(i, a.Len())
+	err := a.checkIndex(i)
 	if err != nil {
 		return err
 	}
@@ -58,7 +59,7 @@ func (a *array) Remove(items ...interface{}) {
 }
 
 func (a *array) RemoveAt(i int) (interface{}, error) {
-	err := check.Index(i, a.Len())
+	err := a.checkIndex(i)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +76,7 @@ func (a *array) Replace(toBeReplaced, substitute interface{}) {
 }
 
 func (a *array) ReplaceAt(i int, substitute interface{}) (interface{}, error) {
-	err := check.Index(i, a.Len())
+	err := a.checkIndex(i)
 	if err != nil {
 		return nil, err
 	}
@@ -239,18 +240,16 @@ func (a *array) Slice() []interface{} {
 }
 
 func (a *array) SubArray(i, j int) (Interface, error) {
-	length := a.Len()
-	err := check.Index(i, length)
+	err := a.checkIndex(i)
 	if err != nil {
 		return nil, err
 	}
-	err = check.Index(j, length)
+	err = a.checkIndex(j)
 	if err != nil {
 		return nil, err
 	}
-	err = check.Inferior(i, j)
-	if err != nil {
-		return nil, err
+	if i > j {
+		return nil, errors.New("expect i>j")
 	}
 	slice := a.Slice()
 	result := New(slice...)
@@ -266,4 +265,11 @@ func (a *array) CopyArr() Interface {
 
 func (a *array) CopyCollection() collection.Interface {
 	return a.CopyArr()
+}
+
+func (a *array) checkIndex(i int) error {
+	if i < 0 || i >= a.Len() {
+		return errors.New("index out of bounds")
+	}
+	return nil
 }

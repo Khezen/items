@@ -1,15 +1,15 @@
 package oset
 
 import (
-	"github.com/khezen/check"
+	"testing"
+
 	"github.com/khezen/struct/array"
 	"github.com/khezen/struct/collection"
 	"github.com/khezen/struct/set"
-	"testing"
 )
 
 func testErr(err error, expectErr bool, t *testing.T) {
-	if !check.ErrorExpectation(err, expectErr) {
+	if (expectErr && err == nil) || (!expectErr && err != nil) {
 		t.Errorf(" Error expected? %v. Got: %v.", expectErr, err)
 	}
 }

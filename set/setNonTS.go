@@ -2,8 +2,9 @@ package set
 
 import (
 	"fmt"
-	"github.com/khezen/struct/collection"
 	"strings"
+
+	"github.com/khezen/struct/collection"
 )
 
 // set defines a non-thread safe set data structure.
@@ -49,7 +50,6 @@ func (s *set) Pop() interface{} {
 // passed. For multiple items it returns true only if all of  the items exist.
 func (s *set) Has(items ...interface{}) bool {
 	has := true
-	// assume checked for empty item, which not exist
 	for _, item := range items {
 		if _, has = s.m[item]; !has {
 			break
