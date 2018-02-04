@@ -64,7 +64,10 @@ func (a *array) RemoveAt(i int) (interface{}, error) {
 		return nil, err
 	}
 	item := a.s[i]
-	a.s = append(a.s[:i], a.s[i+1:]...)
+	length := len(a.s)
+	copy(a.s[i:], a.s[i+1:])
+	a.s[length-1] = nil
+	a.s = a.s[:length-1]
 	return item, nil
 }
 
