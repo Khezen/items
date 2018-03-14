@@ -19,8 +19,8 @@ func TestGet(t *testing.T) {
 	}{
 		{New("1", 1, "42", 42, "-8", -8), "-8", -8, false},
 		{New("1", 1, "42", 42, "-8", -8), "1000", nil, true},
-		{NewTS("1", 1, "42", 42, "-8", -8), "-8", -8, false},
-		{NewTS("1", 1, "42", 42, "-8", -8), "1000", nil, true},
+		{NewSync("1", 1, "42", 42, "-8", -8), "-8", -8, false},
+		{NewSync("1", 1, "42", 42, "-8", -8), "1000", nil, true},
 	}
 	for _, c := range cases {
 		item, err := c.h.Get(c.key)
@@ -37,7 +37,7 @@ func TestPut(t *testing.T) {
 		key, value  interface{}
 	}{
 		{New("1", 1, "42", 42), New("1", 1, "42", 42, "-8", -8), "-8", -8},
-		{NewTS("1", 1, "42", 42), NewTS("1", 1, "42", 42, "-8", -8), "-8", -8},
+		{NewSync("1", 1, "42", 42), NewSync("1", 1, "42", 42, "-8", -8), "-8", -8},
 	}
 	for _, c := range cases {
 		c.h.Put(c.key, c.value)
@@ -55,9 +55,9 @@ func TestRemove(t *testing.T) {
 		{New("1", 1, "42", 42, "-8", -8), New("1", 1, "42", 42), []interface{}{"-8"}},
 		{New("1", 1, "42", 42, "-8", -8), New("42", 42), []interface{}{"-8", "1"}},
 		{New("1", 1, "42", 42, "-8", -8), New("1", 1, "42", 42), []interface{}{"-8", "-1"}},
-		{NewTS("1", 1, "42", 42, "-8", -8), NewTS("1", 1, "42", 42), []interface{}{"-8"}},
-		{NewTS("1", 1, "42", 42, "-8", -8), NewTS("42", 42), []interface{}{"-8", "1"}},
-		{NewTS("1", 1, "42", 42, "-8", -8), NewTS("1", 1, "42", 42), []interface{}{"-8", "-1"}},
+		{NewSync("1", 1, "42", 42, "-8", -8), NewSync("1", 1, "42", 42), []interface{}{"-8"}},
+		{NewSync("1", 1, "42", 42, "-8", -8), NewSync("42", 42), []interface{}{"-8", "1"}},
+		{NewSync("1", 1, "42", 42, "-8", -8), NewSync("1", 1, "42", 42), []interface{}{"-8", "-1"}},
 	}
 	for _, c := range cases {
 		c.h.Remove(c.keys...)
@@ -76,9 +76,9 @@ func TestHas(t *testing.T) {
 		{New("1", 1, "42", 42, "-8", -8), []interface{}{"-8"}, true},
 		{New("1", 1, "42", 42, "-8", -8), []interface{}{"-8", "1"}, true},
 		{New("1", 1, "42", 42, "-8", -8), []interface{}{"-8", "-1"}, false},
-		{NewTS("1", 1, "42", 42, "-8", -8), []interface{}{"-8"}, true},
-		{NewTS("1", 1, "42", 42, "-8", -8), []interface{}{"-8", "1"}, true},
-		{NewTS("1", 1, "42", 42, "-8", -8), []interface{}{"-8", "-1"}, false},
+		{NewSync("1", 1, "42", 42, "-8", -8), []interface{}{"-8"}, true},
+		{NewSync("1", 1, "42", 42, "-8", -8), []interface{}{"-8", "1"}, true},
+		{NewSync("1", 1, "42", 42, "-8", -8), []interface{}{"-8", "-1"}, false},
 	}
 	for _, c := range cases {
 		if c.h.Has(c.keys...) != c.has {
@@ -96,9 +96,9 @@ func TestHasValue(t *testing.T) {
 		{New("1", 1, "42", 42, "-8", -8), []interface{}{-8}, true},
 		{New("1", 1, "42", 42, "-8", -8), []interface{}{-8, 1}, true},
 		{New("1", 1, "42", 42, "-8", -8), []interface{}{-8, -1}, false},
-		{NewTS("1", 1, "42", 42, "-8", -8), []interface{}{-8}, true},
-		{NewTS("1", 1, "42", 42, "-8", -8), []interface{}{-8, 1}, true},
-		{NewTS("1", 1, "42", 42, "-8", -8), []interface{}{-8, -1}, false},
+		{NewSync("1", 1, "42", 42, "-8", -8), []interface{}{-8}, true},
+		{NewSync("1", 1, "42", 42, "-8", -8), []interface{}{-8, 1}, true},
+		{NewSync("1", 1, "42", 42, "-8", -8), []interface{}{-8, -1}, false},
 	}
 	for _, c := range cases {
 		if c.h.HasValue(c.values...) != c.has {
@@ -115,8 +115,8 @@ func TestKeyOf(t *testing.T) {
 	}{
 		{New("1", 1, "42", 42, "-8", -8), -8, "-8", false},
 		{New("1", 1, "42", 42, "-8", -8), 1000, nil, true},
-		{NewTS("1", 1, "42", 42, "-8", -8), -8, "-8", false},
-		{NewTS("1", 1, "42", 42, "-8", -8), 1000, nil, true},
+		{NewSync("1", 1, "42", 42, "-8", -8), -8, "-8", false},
+		{NewSync("1", 1, "42", 42, "-8", -8), 1000, nil, true},
 	}
 	for _, c := range cases {
 		key, err := c.h.KeyOf(c.value)
@@ -133,7 +133,7 @@ func TestEach(t *testing.T) {
 		stop bool
 	}{
 		{New("1", 1, "-8", -8, "42", 42), true},
-		{NewTS("1", 1, "-8", -8, "42", 42), false},
+		{NewSync("1", 1, "-8", -8, "42", 42), false},
 	}
 	for _, c := range cases {
 		count := 0
@@ -154,7 +154,7 @@ func TestLen(t *testing.T) {
 		len int
 	}{
 		{New("1", 1, "-8", -8, "42", 42), 3},
-		{NewTS("1", 1, "-8", -8, "42", 42), 3},
+		{NewSync("1", 1, "-8", -8, "42", 42), 3},
 	}
 	for _, c := range cases {
 		length := c.h.Len()
@@ -169,7 +169,7 @@ func TestClear(t *testing.T) {
 		h Interface
 	}{
 		{New("1", 1, "-8", -8, "42", 42)},
-		{NewTS("1", 1, "-8", -8, "42", 42)},
+		{NewSync("1", 1, "-8", -8, "42", 42)},
 	}
 	for _, c := range cases {
 		c.h.Clear()
@@ -186,8 +186,8 @@ func TestIsEmpty(t *testing.T) {
 	}{
 		{New("1", 1, "-8", -8, "42", 42), false},
 		{New(), true},
-		{NewTS("1", 1, "-8", -8, "42", 42), false},
-		{NewTS(), true},
+		{NewSync("1", 1, "-8", -8, "42", 42), false},
+		{NewSync(), true},
 	}
 	for _, c := range cases {
 		empty := c.h.IsEmpty()
@@ -205,9 +205,9 @@ func TestIsEqual(t *testing.T) {
 		{New("1", 1, "-8", -8, "42", 42), New("1", 1, "-8", -8), false},
 		{New("1", 1, "-8", -8, "42", 42), New("1", 1, "-8", -8, "42"), false},
 		{New("1", 1, "-8", -8, "42", 42), New("1", 1, "-8", -8, "42", 42), true},
-		{NewTS("1", 1, "-8", -8, "42", 42), NewTS("1", 1, "-8", -8), false},
-		{NewTS("1", 1, "-8", -8, "42", 42), NewTS("1", 1, "-8", -8, "42"), false},
-		{NewTS("1", 1, "-8", -8, "42", 42), NewTS("1", 1, "-8", -8, "42", 42), true},
+		{NewSync("1", 1, "-8", -8, "42", 42), NewSync("1", 1, "-8", -8), false},
+		{NewSync("1", 1, "-8", -8, "42", 42), NewSync("1", 1, "-8", -8, "42"), false},
+		{NewSync("1", 1, "-8", -8, "42", 42), NewSync("1", 1, "-8", -8, "42", 42), true},
 	}
 	for _, c := range cases {
 		equal := c.h.IsEqual(c.t)
@@ -222,7 +222,7 @@ func TestString(t *testing.T) {
 		h Interface
 	}{
 		{New("1", 1)},
-		{NewTS("1", 1)},
+		{NewSync("1", 1)},
 	}
 	for _, c := range cases {
 		str := c.h.String()
@@ -239,7 +239,7 @@ func TestKeys(t *testing.T) {
 		keys []interface{}
 	}{
 		{New("1", 1, "42", 42, "-8", -8), keys},
-		{NewTS("1", 1, "42", 42, "-8", -8), keys},
+		{NewSync("1", 1, "42", 42, "-8", -8), keys},
 	}
 	for _, c := range cases {
 		keys := c.h.Keys()
@@ -265,7 +265,7 @@ func TestValues(t *testing.T) {
 		values []interface{}
 	}{
 		{New("1", 1, "42", 42, "-8", -8), values},
-		{NewTS("1", 1, "42", 42, "-8", -8), values},
+		{NewSync("1", 1, "42", 42, "-8", -8), values},
 	}
 	for _, c := range cases {
 		values := c.h.Values()
@@ -291,7 +291,7 @@ func TestMap(t *testing.T) {
 		m map[interface{}]interface{}
 	}{
 		{New("1", 1, "42", 42, "-8", -8), m},
-		{NewTS("1", 1, "42", 42, "-8", -8), m},
+		{NewSync("1", 1, "42", 42, "-8", -8), m},
 	}
 	for _, c := range cases {
 		m := c.h.Map()
@@ -308,7 +308,7 @@ func TestCopy(t *testing.T) {
 		h Interface
 	}{
 		{New("1", 1, "42", 42, "-8", -8)},
-		{NewTS("1", 1, "42", 42, "-8", -8)},
+		{NewSync("1", 1, "42", 42, "-8", -8)},
 	}
 	for _, c := range cases {
 		cpy := c.h.Copy()

@@ -4,107 +4,107 @@ import (
 	"sync"
 )
 
-type hashmapTS struct {
+type hashmapSync struct {
 	hashmap
 	l sync.RWMutex
 }
 
-// NewTS creates a new thread safe hashmap
-func NewTS(pairs ...interface{}) Interface {
-	return &hashmapTS{
+// NewSync creates a new thread safe hashmap
+func NewSync(pairs ...interface{}) Interface {
+	return &hashmapSync{
 		*New(pairs...).(*hashmap),
 		sync.RWMutex{},
 	}
 }
 
-func (h *hashmapTS) Get(k interface{}) (interface{}, error) {
+func (h *hashmapSync) Get(k interface{}) (interface{}, error) {
 	h.l.RLock()
 	defer h.l.RUnlock()
 	return h.hashmap.Get(k)
 }
 
-func (h *hashmapTS) Put(k, v interface{}) {
+func (h *hashmapSync) Put(k, v interface{}) {
 	h.l.Lock()
 	defer h.l.Unlock()
 	h.hashmap.Put(k, v)
 }
 
-func (h *hashmapTS) Remove(keys ...interface{}) {
+func (h *hashmapSync) Remove(keys ...interface{}) {
 	h.l.Lock()
 	defer h.l.Unlock()
 	h.hashmap.Remove(keys...)
 }
 
-func (h *hashmapTS) Has(keys ...interface{}) bool {
+func (h *hashmapSync) Has(keys ...interface{}) bool {
 	h.l.RLock()
 	defer h.l.RUnlock()
 	return h.hashmap.Has(keys...)
 }
 
-func (h *hashmapTS) HasValue(values ...interface{}) bool {
+func (h *hashmapSync) HasValue(values ...interface{}) bool {
 	h.l.RLock()
 	defer h.l.RUnlock()
 	return h.hashmap.HasValue(values...)
 }
 
-func (h *hashmapTS) KeyOf(value interface{}) (interface{}, error) {
+func (h *hashmapSync) KeyOf(value interface{}) (interface{}, error) {
 	h.l.RLock()
 	defer h.l.RUnlock()
 	return h.hashmap.KeyOf(value)
 }
 
-func (h *hashmapTS) Each(f func(k, v interface{}) bool) {
+func (h *hashmapSync) Each(f func(k, v interface{}) bool) {
 	h.l.RLock()
 	defer h.l.RUnlock()
 	h.hashmap.Each(f)
 }
 
-func (h *hashmapTS) Len() int {
+func (h *hashmapSync) Len() int {
 	h.l.RLock()
 	defer h.l.RUnlock()
 	return h.hashmap.Len()
 }
 
-func (h *hashmapTS) Clear() {
+func (h *hashmapSync) Clear() {
 	h.l.Lock()
 	defer h.l.Unlock()
 	h.hashmap.Clear()
 }
 
-func (h *hashmapTS) IsEmpty() bool {
+func (h *hashmapSync) IsEmpty() bool {
 	h.l.RLock()
 	defer h.l.RUnlock()
 	return h.hashmap.IsEmpty()
 }
 
-func (h *hashmapTS) IsEqual(t Interface) bool {
+func (h *hashmapSync) IsEqual(t Interface) bool {
 	h.l.RLock()
 	defer h.l.RUnlock()
 	return h.hashmap.IsEqual(t)
 }
 
-func (h *hashmapTS) String() string {
+func (h *hashmapSync) String() string {
 	h.l.RLock()
 	defer h.l.RUnlock()
 	return h.hashmap.String()
 }
 
-func (h *hashmapTS) Keys() []interface{} {
+func (h *hashmapSync) Keys() []interface{} {
 	h.l.RLock()
 	defer h.l.RUnlock()
 	return h.hashmap.Keys()
 }
 
-func (h *hashmapTS) Values() []interface{} {
+func (h *hashmapSync) Values() []interface{} {
 	h.l.RLock()
 	defer h.l.RUnlock()
 	return h.hashmap.Values()
 }
 
-func (h *hashmapTS) Copy() Interface {
+func (h *hashmapSync) Copy() Interface {
 	h.l.RLock()
 	defer h.l.RUnlock()
-	cpy := NewTS()
+	cpy := NewSync()
 	h.Each(func(k, v interface{}) bool {
 		cpy.Put(k, v)
 		return true

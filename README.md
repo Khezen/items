@@ -80,13 +80,13 @@ package example
 import "github.com/khezen/struct/array"
 
 arr := array.New(0, 2, -4, 10)
-threadsafeArr := array.NewTS(0, 2, -4, 10)
+threadsafeArr := array.NewSync(0, 2, -4, 10)
 
 less := func(slice []interface{}, i, j int) bool {
 	return slice[i].(int) < slice[j].(int)
 }
 sortedArr := array.NewSorted(less, 0, 2, -4, 10)
-threadsafeSortedArr := array.NewSortedTS(less,	0, 2, -4, 10)
+threadsafeSortedArr := array.NewSortedSync(less,	0, 2, -4, 10)
 ```
 
 
@@ -115,7 +115,7 @@ package example
 import "github.com/khezen/struct/set"
 
 s := set.New(0, 2, -4, 10)
-threadsafeS := set.NewTS(0, 2, -4, 10)
+threadsafeS := set.NewSync(0, 2, -4, 10)
 ```
 
 # [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/oset) *ordered set*
@@ -152,13 +152,13 @@ package example
 import "github.com/khezen/struct/oset"
 
 s := oset.New(0, 2, -4, 10)
-threadsafeS := oset.NewTS(0, 2, -4, 10)
+threadsafeS := oset.NewSync(0, 2, -4, 10)
 
 less := func(slice []interface{}, i, j int) bool {
 	return slice[i].(int) < slice[j].(int)
 }
 sortedS := oset.NewSorted(less, 0, 2, -4, 10)
-threadsafeSortedS := oset.NewSortedTS(less,	0, 2, -4, 10)
+threadsafeSortedS := oset.NewSortedSync(less,	0, 2, -4, 10)
 ```
 
 # [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/hashmap) *hashmap*
@@ -202,7 +202,7 @@ hm := hashmap.New(
 	"42", 42,
 	"-8", -8,
 )
-threadsafeHm := hashmap.NewTS(
+threadsafeHm := hashmap.NewSync(
 	"1", 1,
 	"42", 42,
 	"-8", -8,

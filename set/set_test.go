@@ -21,11 +21,11 @@ func TestAdd(t *testing.T) {
 		{New(), New(), New()},
 		{New(), New(nil), New(nil)},
 		{New(), New(42, -1), New(42, -1)},
-		{NewTS(1, 4, -8), New(42, -1), NewTS(1, 4, -8, 42, -1)},
-		{NewTS(), New(42, -1), NewTS(42, -1)},
-		{NewTS(), New(), NewTS()},
-		{NewTS(), New(nil), NewTS(nil)},
-		{NewTS(), New(42, -1), NewTS(42, -1)},
+		{NewSync(1, 4, -8), New(42, -1), NewSync(1, 4, -8, 42, -1)},
+		{NewSync(), New(42, -1), NewSync(42, -1)},
+		{NewSync(), New(), NewSync()},
+		{NewSync(), New(nil), NewSync(nil)},
+		{NewSync(), New(42, -1), NewSync(42, -1)},
 	}
 	for _, c := range cases {
 		c.set.Add(c.toBeAdded.Slice()...)
@@ -40,7 +40,7 @@ func TestPop(t *testing.T) {
 		s Interface
 	}{
 		{New(1, 2, "fatih")},
-		{NewTS(1, 2, "fatih")},
+		{NewSync(1, 2, "fatih")},
 	}
 	for _, c := range cases {
 		length := c.s.Len()
@@ -67,8 +67,8 @@ func TestIsSubset(t *testing.T) {
 	}{
 		{New("1", "2", "3", "4"), New("1", "2", "3"), true},
 		{New("1", "2", "3"), New("1", "2", "3", "4"), false},
-		{NewTS("1", "2", "3", "4"), NewTS("1", "2", "3"), true},
-		{NewTS("1", "2", "3"), NewTS("1", "2", "3", "4"), false},
+		{NewSync("1", "2", "3", "4"), NewSync("1", "2", "3"), true},
+		{NewSync("1", "2", "3"), NewSync("1", "2", "3", "4"), false},
 	}
 	for _, c := range cases {
 		ok := c.s.IsSubset(c.sub)
@@ -85,8 +85,8 @@ func TestIsSuperset(t *testing.T) {
 	}{
 		{New("1", "2", "3", "4"), New("1", "2", "3"), false},
 		{New("1", "2", "3"), New("1", "2", "3", "4"), true},
-		{NewTS("1", "2", "3", "4"), NewTS("1", "2", "3"), false},
-		{NewTS("1", "2", "3"), NewTS("1", "2", "3", "4"), true},
+		{NewSync("1", "2", "3", "4"), NewSync("1", "2", "3"), false},
+		{NewSync("1", "2", "3"), NewSync("1", "2", "3", "4"), true},
 	}
 	for _, c := range cases {
 		ok := c.s.IsSuperset(c.sub)
@@ -105,11 +105,11 @@ func TestRemove(t *testing.T) {
 		{New(), New(42, -1), New()},
 		{New(), New(), New()},
 		{New(), New(nil), New()},
-		{NewTS(1, 4, -8), New(42, -1), NewTS(1, 4, -8)},
-		{NewTS(1, 4, -8), New(1, -8), NewTS(4)},
-		{NewTS(), New(42, -1), NewTS()},
-		{NewTS(), New(), NewTS()},
-		{NewTS(), New(nil), NewTS()},
+		{NewSync(1, 4, -8), New(42, -1), NewSync(1, 4, -8)},
+		{NewSync(1, 4, -8), New(1, -8), NewSync(4)},
+		{NewSync(), New(42, -1), NewSync()},
+		{NewSync(), New(), NewSync()},
+		{NewSync(), New(nil), NewSync()},
 	}
 	for _, c := range cases {
 		c.set.Remove(c.toBeRemoved.Slice()...)
@@ -126,8 +126,8 @@ func TestReplace(t *testing.T) {
 	}{
 		{New(1, 4, -8), New(42, 4, -8), 1, 42},
 		{New(1, 4, -8), New(1, 4, -8), 1000, 42},
-		{NewTS(1, 4, -8), NewTS(42, 4, -8), 1, 42},
-		{NewTS(1, 4, -8), NewTS(1, 4, -8), 1000, 42},
+		{NewSync(1, 4, -8), NewSync(42, 4, -8), 1, 42},
+		{NewSync(1, 4, -8), NewSync(1, 4, -8), 1000, 42},
 	}
 	for _, c := range cases {
 		c.set.Replace(c.item, c.substitute)
@@ -147,11 +147,11 @@ func TestHas(t *testing.T) {
 		{New(1, 42, -8), New(34), false},
 		{New(1, 42, -8), New(nil), false},
 		{New(1, 42, -8), New(), true},
-		{NewTS(1, 42, -8), NewTS(1, 42, -8), true},
-		{NewTS(1, 42, -8), NewTS(-8), true},
-		{NewTS(1, 42, -8), NewTS(34), false},
-		{NewTS(1, 42, -8), NewTS(nil), false},
-		{NewTS(1, 42, -8), NewTS(), true},
+		{NewSync(1, 42, -8), NewSync(1, 42, -8), true},
+		{NewSync(1, 42, -8), NewSync(-8), true},
+		{NewSync(1, 42, -8), NewSync(34), false},
+		{NewSync(1, 42, -8), NewSync(nil), false},
+		{NewSync(1, 42, -8), NewSync(), true},
 	}
 	for _, c := range cases {
 		has := c.set.Has(c.items.Slice()...)
@@ -167,7 +167,7 @@ func TestEach(t *testing.T) {
 		stop bool
 	}{
 		{New(1, -8, 42), true},
-		{NewTS(1, -8, 42), false},
+		{NewSync(1, -8, 42), false},
 	}
 	for _, c := range cases {
 		count := 0
@@ -190,9 +190,9 @@ func TestLen(t *testing.T) {
 		{New(), 0},
 		{New(1), 1},
 		{New(1, 42, -8), 3},
-		{NewTS(), 0},
-		{NewTS(1), 1},
-		{NewTS(1, 42, -8), 3},
+		{NewSync(), 0},
+		{NewSync(1), 1},
+		{NewSync(1, 42, -8), 3},
 	}
 	for _, c := range cases {
 		if c.set.Len() != c.len {
@@ -207,8 +207,8 @@ func TestClear(t *testing.T) {
 	}{
 		{New(1, 42, -8)},
 		{New()},
-		{NewTS(1, 42, -8)},
-		{NewTS()},
+		{NewSync(1, 42, -8)},
+		{NewSync()},
 	}
 	for _, c := range cases {
 		c.set.Clear()
@@ -225,8 +225,8 @@ func TestIsEmpty(t *testing.T) {
 	}{
 		{New(), true},
 		{New(1, 42, -8), false},
-		{NewTS(), true},
-		{NewTS(1, 42, -8), false},
+		{NewSync(), true},
+		{NewSync(1, 42, -8), false},
 	}
 	for _, c := range cases {
 		if c.set.IsEmpty() != c.isEmpty {
@@ -245,11 +245,11 @@ func TestIsEqual(t *testing.T) {
 		{New(1, 42, -8), New(1, "42", -8), false},
 		{New(1, 42, -8), New(), false},
 		{New(66, -1000), New(42, 1, 8), false},
-		{NewTS(), NewTS(), true},
-		{NewTS(1, 42, -8), NewTS(1, 42, -8), true},
-		{NewTS(1, 42, -8), NewTS(1, "42", -8), false},
-		{NewTS(1, 42, -8), NewTS(), false},
-		{NewTS(66, -1000), NewTS(42, 1, 8), false},
+		{NewSync(), NewSync(), true},
+		{NewSync(1, 42, -8), NewSync(1, 42, -8), true},
+		{NewSync(1, 42, -8), NewSync(1, "42", -8), false},
+		{NewSync(1, 42, -8), NewSync(), false},
+		{NewSync(66, -1000), NewSync(42, 1, 8), false},
 	}
 	for _, c := range cases {
 		isEqual := c.set.IsEqual(c.toBeCompared)
@@ -267,10 +267,10 @@ func TestMerge(t *testing.T) {
 		{New(1, 42), New(-8, nil), New(1, 42, -8, nil)},
 		{New(1, 42), New(), New(1, 42)},
 		{New(), New(), New()},
-		{NewTS(1, 42), NewTS(-8), NewTS(1, 42, -8)},
-		{NewTS(1, 42), NewTS(-8, nil), NewTS(1, 42, -8, nil)},
-		{NewTS(1, 42), NewTS(), NewTS(1, 42)},
-		{NewTS(), NewTS(), NewTS()},
+		{NewSync(1, 42), NewSync(-8), NewSync(1, 42, -8)},
+		{NewSync(1, 42), NewSync(-8, nil), NewSync(1, 42, -8, nil)},
+		{NewSync(1, 42), NewSync(), NewSync(1, 42)},
+		{NewSync(), NewSync(), NewSync()},
 	}
 	for _, c := range cases {
 		c.set.Merge(c.toBeMerged)
@@ -288,10 +288,10 @@ func TestSeparate(t *testing.T) {
 		{New(1, 42, -8), New(1, 42, nil), New(-8)},
 		{New(1, 42, -8), New(), New(1, 42, -8)},
 		{New(), New(), New()},
-		{NewTS(1, 42, -8), NewTS(1, 42), NewTS(-8)},
-		{NewTS(1, 42, -8), NewTS(1, 42, nil), NewTS(-8)},
-		{NewTS(1, 42, -8), NewTS(), NewTS(1, 42, -8)},
-		{NewTS(), NewTS(), NewTS()},
+		{NewSync(1, 42, -8), NewSync(1, 42), NewSync(-8)},
+		{NewSync(1, 42, -8), NewSync(1, 42, nil), NewSync(-8)},
+		{NewSync(1, 42, -8), NewSync(), NewSync(1, 42, -8)},
+		{NewSync(), NewSync(), NewSync()},
 	}
 	for _, c := range cases {
 		c.set.Separate(c.toBeMerged)
@@ -309,10 +309,10 @@ func TestRetain(t *testing.T) {
 		{New(1, 42, -8), New(1, -8, 100, nil), New(1, -8)},
 		{New(1, 42, -8), New(), New()},
 		{New(), New(), New()},
-		{NewTS(1, 42, -8), NewTS(1, -8, 100), NewTS(1, -8)},
-		{NewTS(1, 42, -8), NewTS(1, -8, 100, nil), NewTS(1, -8)},
-		{NewTS(1, 42, -8), NewTS(), NewTS()},
-		{NewTS(), NewTS(), NewTS()},
+		{NewSync(1, 42, -8), NewSync(1, -8, 100), NewSync(1, -8)},
+		{NewSync(1, 42, -8), NewSync(1, -8, 100, nil), NewSync(1, -8)},
+		{NewSync(1, 42, -8), NewSync(), NewSync()},
+		{NewSync(), NewSync(), NewSync()},
 	}
 	for _, c := range cases {
 		c.set.Retain(c.toBeMerged)
@@ -330,9 +330,9 @@ func TestString(t *testing.T) {
 		{New(1), "[1]"},
 		{New(), "[]"},
 		{New(nil), "[<nil>]"},
-		{NewTS(1), "[1]"},
-		{NewTS(), "[]"},
-		{NewTS(nil), "[<nil>]"},
+		{NewSync(1), "[1]"},
+		{NewSync(), "[]"},
+		{NewSync(nil), "[<nil>]"},
 	}
 
 	for _, c := range cases {
@@ -351,7 +351,7 @@ func TestSlice(t *testing.T) {
 		{[]interface{}{1, 5, -76}},
 	}
 	for _, c := range cases {
-		arr, arrTS := New(c.slice...), NewTS(c.slice...)
+		arr, arrSync := New(c.slice...), NewSync(c.slice...)
 		s := arr.Slice()
 		for i := range s {
 			has := false
@@ -365,7 +365,7 @@ func TestSlice(t *testing.T) {
 				t.Errorf("Expected %v. Got %v.", c.slice, s)
 			}
 		}
-		s = arrTS.Slice()
+		s = arrSync.Slice()
 		for i := range s {
 			has := false
 			for j := range c.slice {
@@ -387,8 +387,8 @@ func TestCopySet(t *testing.T) {
 	}{
 		{New(1, 42, -8)},
 		{New(-66, 1000, 32)},
-		{NewTS(1, 42, -8)},
-		{NewTS(-66, 1000, 32)},
+		{NewSync(1, 42, -8)},
+		{NewSync(-66, 1000, 32)},
 	}
 	for _, c := range cases {
 		cpy := c.set.CopySet()
@@ -404,8 +404,8 @@ func TestCopyCollection(t *testing.T) {
 	}{
 		{New(1, 42, -8)},
 		{New(-66, 1000, 32)},
-		{NewTS(1, 42, -8)},
-		{NewTS(-66, 1000, 32)},
+		{NewSync(1, 42, -8)},
+		{NewSync(-66, 1000, 32)},
 	}
 	for _, c := range cases {
 		cpy := c.set.CopyCollection()
@@ -424,9 +424,9 @@ func TestUnion(t *testing.T) {
 		{[]collection.Interface{New(1, 42, -8), New(5, 42, 6)}, New(1, 42, -8, 5, 6)},
 		{[]collection.Interface{New(1, 42, -8)}, New(1, 42, -8)},
 		{[]collection.Interface{}, nil},
-		{[]collection.Interface{NewTS(1, 42, -8), NewTS(5, 42, 6), NewTS(1, 42, -8, 7)}, NewTS(1, 42, -8, 5, 6, 7)},
-		{[]collection.Interface{NewTS(1, 42, -8), NewTS(5, 42, 6)}, NewTS(1, 42, -8, 5, 6)},
-		{[]collection.Interface{NewTS(1, 42, -8)}, NewTS(1, 42, -8)},
+		{[]collection.Interface{NewSync(1, 42, -8), NewSync(5, 42, 6), NewSync(1, 42, -8, 7)}, NewSync(1, 42, -8, 5, 6, 7)},
+		{[]collection.Interface{NewSync(1, 42, -8), NewSync(5, 42, 6)}, NewSync(1, 42, -8, 5, 6)},
+		{[]collection.Interface{NewSync(1, 42, -8)}, NewSync(1, 42, -8)},
 	}
 	for _, c := range cases {
 		result := collection.Union(c.sets...)
@@ -445,9 +445,9 @@ func TestDifference(t *testing.T) {
 		{[]collection.Interface{New(1, 42, -8), New(-8, 1, 6)}, New(42)},
 		{[]collection.Interface{New(1, 42, -8)}, New(1, 42, -8)},
 		{[]collection.Interface{}, nil},
-		{[]collection.Interface{NewTS(1, 42, -8), NewTS(-8, 6, 6), NewTS(1, 7)}, NewTS(42)},
-		{[]collection.Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6)}, NewTS(42)},
-		{[]collection.Interface{NewTS(1, 42, -8)}, NewTS(1, 42, -8)},
+		{[]collection.Interface{NewSync(1, 42, -8), NewSync(-8, 6, 6), NewSync(1, 7)}, NewSync(42)},
+		{[]collection.Interface{NewSync(1, 42, -8), NewSync(-8, 1, 6)}, NewSync(42)},
+		{[]collection.Interface{NewSync(1, 42, -8)}, NewSync(1, 42, -8)},
 	}
 	for _, c := range cases {
 		result := collection.Difference(c.sets...)
@@ -466,9 +466,9 @@ func TestIntersection(t *testing.T) {
 		{[]collection.Interface{New(1, 42, -8), New(-8, 1, 6)}, New(1, -8)},
 		{[]collection.Interface{New(1, 42, -8)}, New(1, 42, -8)},
 		{[]collection.Interface{}, nil},
-		{[]collection.Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6), NewTS(1, 7)}, NewTS(1)},
-		{[]collection.Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6)}, NewTS(1, -8)},
-		{[]collection.Interface{NewTS(1, 42, -8)}, NewTS(1, 42, -8)},
+		{[]collection.Interface{NewSync(1, 42, -8), NewSync(-8, 1, 6), NewSync(1, 7)}, NewSync(1)},
+		{[]collection.Interface{NewSync(1, 42, -8), NewSync(-8, 1, 6)}, NewSync(1, -8)},
+		{[]collection.Interface{NewSync(1, 42, -8)}, NewSync(1, 42, -8)},
 	}
 	for _, c := range cases {
 		result := collection.Intersection(c.sets...)
@@ -487,9 +487,9 @@ func TestExclusion(t *testing.T) {
 		{[]collection.Interface{New(1, 42, -8), New(-8, 1, 6)}, New(42, 6)},
 		{[]collection.Interface{New(1, 42, -8)}, New(1, 42, -8)},
 		{[]collection.Interface{}, nil},
-		{[]collection.Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6), NewTS(1, 7)}, NewTS(42, 6, 7)},
-		{[]collection.Interface{NewTS(1, 42, -8), NewTS(-8, 1, 6)}, NewTS(42, 6)},
-		{[]collection.Interface{NewTS(1, 42, -8)}, NewTS(1, 42, -8)},
+		{[]collection.Interface{NewSync(1, 42, -8), NewSync(-8, 1, 6), NewSync(1, 7)}, NewSync(42, 6, 7)},
+		{[]collection.Interface{NewSync(1, 42, -8), NewSync(-8, 1, 6)}, NewSync(42, 6)},
+		{[]collection.Interface{NewSync(1, 42, -8)}, NewSync(1, 42, -8)},
 	}
 	for _, c := range cases {
 		result := collection.Exclusion(c.sets...)
