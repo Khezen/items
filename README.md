@@ -50,44 +50,8 @@ func Exclusion(collections ...Interface) Interface
 import "github.com/khezen/struct/array"
 `
 
-Abstraction layer over slices exposing utility functions and thread safe implementation of dynamic array.
+Abstraction layer over slices exposing utility functions and synchronized implementation of dynamic array.
 
-```golang
-type Interface interface {
-	collection.Interface
-	Get(i int) (interface{}, error)
-	Insert(i int, items ...interface{}) error
-	RemoveAt(i int) (interface{}, error)
-	ReplaceAt(i int, substitute interface{}) (interface{}, error)
-	IndexOf(interface{}) (int, error)
-	Swap(i, j int)
-
-	SubArray(i, j int) (Interface, error)
-	Copy() Interface
-}
-
-type Sorted interface {
-	Interface
-	Sort()
-	Less(i, j int) bool
-}
-
-```
-
-```golang
-package example
-
-import "github.com/khezen/struct/array"
-
-arr := array.New(0, 2, -4, 10)
-threadsafeArr := array.NewSync(0, 2, -4, 10)
-
-less := func(slice []interface{}, i, j int) bool {
-	return slice[i].(int) < slice[j].(int)
-}
-sortedArr := array.NewSorted(less, 0, 2, -4, 10)
-threadsafeSortedArr := array.NewSortedSync(less,	0, 2, -4, 10)
-```
 
 
 # [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/set) *set*
@@ -96,27 +60,8 @@ threadsafeSortedArr := array.NewSortedSync(less,	0, 2, -4, 10)
 import "github.com/khezen/struct/set"
 `
 
-Both threadsafe and non-threadsafe implementations of a generic
-set data structure.
+Both synchronized and non-synchronized implementations of a generic set data structure.
 
-```Golang
-type Interface interface {
-	collection.Interface
-	Pop() interface{}
-	IsSubset(s Interface) bool
-	IsSuperset(s Interface) bool
-	Copy() Interface
-}
-```
-
-```golang
-package example
-
-import "github.com/khezen/struct/set"
-
-s := set.New(0, 2, -4, 10)
-threadsafeS := set.NewSync(0, 2, -4, 10)
-```
 
 # [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/oset) *ordered set*
 
@@ -124,42 +69,8 @@ threadsafeS := set.NewSync(0, 2, -4, 10)
 import "github.com/khezen/struct/oset"
 `
 
-Both threadsafe and non-threadsafe implementations of a generic
-ordered set data structure.
+Both synchronized and non-synchronized implementations of a generic ordered set data structure.
 
-```Golang
-type Interface interface {
-	array.Interface
-	IsSubset(s Interface) bool
-	IsSuperset(s Interface) bool
-	CopyOset() Interface
-	Subset(i, j int) (Interface, error)
-	Set() set.Interface
-	CopySet() set.Interface
-	Arr() array.Interface
-}
-
-type Sorted interface {
-	Interface
-	Sort()
-	Less(i, j int) bool
-}
-```
-
-```golang
-package example
-
-import "github.com/khezen/struct/oset"
-
-s := oset.New(0, 2, -4, 10)
-threadsafeS := oset.NewSync(0, 2, -4, 10)
-
-less := func(slice []interface{}, i, j int) bool {
-	return slice[i].(int) < slice[j].(int)
-}
-sortedS := oset.NewSorted(less, 0, 2, -4, 10)
-threadsafeSortedS := oset.NewSortedSync(less,	0, 2, -4, 10)
-```
 
 # [![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/khezen/struct/hashmap) *hashmap*
 
@@ -167,44 +78,5 @@ threadsafeSortedS := oset.NewSortedSync(less,	0, 2, -4, 10)
 import "github.com/khezen/struct/hashmap"
 `
 
-Both threadsafe and non-threadsafe implementations of a generic
+Both synchronized and non-synchronized implementations of a generic
 hashmap data structure.
-
-```Golang
-type Interface interface {
-	Get(k interface{}) (interface{}, error)
-	Put(k, v interface{})
-	Remove(keys ...interface{})
-	Has(keys ...interface{}) bool
-	HasValue(values ...interface{}) bool
-	KeyOf(value interface{}) (interface{}, error)
-	Each(func(k, v interface{}) bool)
-
-	Len() int
-	Clear()
-	IsEmpty() bool
-	IsEqual(Interface) bool
-
-	String() string
-	Keys() []interface{}
-	Values() []interface{}
-	Copy() Interface
-}
-```
-
-```golang
-package example
-
-import "github.com/khezen/struct/hashmap"
-
-hm := hashmap.New(
-	"1", 1,
-	"42", 42,
-	"-8", -8,
-)
-threadsafeHm := hashmap.NewSync(
-	"1", 1,
-	"42", 42,
-	"-8", -8,
-)
-```

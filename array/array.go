@@ -1,7 +1,6 @@
 package array
 
 import (
-	"errors"
 	"fmt"
 	"reflect"
 	"strings"
@@ -24,12 +23,9 @@ func New(items ...interface{}) Interface {
 	return a
 }
 
-func (a *array) Get(i int) (interface{}, error) {
-	err := a.checkIndex(i)
-	if err != nil {
-		return nil, err
-	}
-	return a.s[i], nil
+func (a *array) Get(i int) interface{} {
+	a.checkIndex(i)
+	return a.s[i]
 }
 
 func (a *array) Add(items ...interface{}) {
@@ -38,15 +34,11 @@ func (a *array) Add(items ...interface{}) {
 	}
 }
 
-func (a *array) Insert(i int, items ...interface{}) error {
-	err := a.checkIndex(i)
-	if err != nil {
-		return err
-	}
+func (a *array) Insert(i int, items ...interface{}) {
+	a.checkIndex(i)
 	if len(items) > 0 {
 		a.s = append(a.s[:i], append(items, a.s[i:]...)...)
 	}
-	return nil
 }
 
 func (a *array) Remove(items ...interface{}) {
@@ -58,17 +50,14 @@ func (a *array) Remove(items ...interface{}) {
 	}
 }
 
-func (a *array) RemoveAt(i int) (interface{}, error) {
-	err := a.checkIndex(i)
-	if err != nil {
-		return nil, err
-	}
+func (a *array) RemoveAt(i int) interface{} {
+	a.checkIndex(i)
 	item := a.s[i]
 	length := len(a.s)
 	copy(a.s[i:], a.s[i+1:])
 	a.s[length-1] = nil
 	a.s = a.s[:length-1]
-	return item, nil
+	return item
 }
 
 func (a *array) Replace(toBeReplaced, substitute interface{}) {
@@ -78,14 +67,11 @@ func (a *array) Replace(toBeReplaced, substitute interface{}) {
 	}
 }
 
-func (a *array) ReplaceAt(i int, substitute interface{}) (interface{}, error) {
-	err := a.checkIndex(i)
-	if err != nil {
-		return nil, err
-	}
+func (a *array) ReplaceAt(i int, substitute interface{}) interface{} {
+	a.checkIndex(i)
 	item := a.s[i]
 	a.s[i] = substitute
-	return item, nil
+	return item
 }
 
 func (a *array) IndexOf(item interface{}) (int, error) {
@@ -94,18 +80,12 @@ func (a *array) IndexOf(item interface{}) (int, error) {
 			return i, nil
 		}
 	}
-	return -1, fmt.Errorf("not found")
+	return -1, ErrNotFound
 }
 
 func (a *array) Swap(i, j int) {
-	itemi, err := a.Get(i)
-	if err != nil {
-		return
-	}
-	itemj, err := a.Get(j)
-	if err != nil {
-		return
-	}
+	itemi := a.Get(i)
+	itemj := a.Get(j)
 	a.ReplaceAt(i, itemj)
 	a.ReplaceAt(j, itemi)
 }
@@ -242,23 +222,17 @@ func (a *array) Slice() []interface{} {
 	return a.s
 }
 
-func (a *array) SubArray(i, j int) (Interface, error) {
-	err := a.checkIndex(i)
-	if err != nil {
-		return nil, err
-	}
-	err = a.checkIndex(j)
-	if err != nil {
-		return nil, err
-	}
+func (a *array) SubArray(i, j int) Interface {
 	if i > j {
-		return nil, errors.New("expect i>j")
+		panic(ErrBadSubsetBoudaries)
 	}
+	a.checkIndex(i)
+	a.checkIndex(j)
 	slice := a.Slice()
 	result := New(slice...)
 	result.Remove(slice[:i]...)
 	result.Remove(slice[j+1:]...)
-	return result, nil
+	return result
 }
 
 // Copy returns a new Set with a copy of s.
@@ -270,9 +244,8 @@ func (a *array) CopyCollection() collection.Interface {
 	return a.CopyArr()
 }
 
-func (a *array) checkIndex(i int) error {
+func (a *array) checkIndex(i int) {
 	if i < 0 || i >= a.Len() {
-		return errors.New("index out of bounds")
+		panic(ErrIndexOutOfBounds)
 	}
-	return nil
 }

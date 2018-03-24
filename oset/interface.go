@@ -11,7 +11,7 @@ type Interface interface {
 	IsSubset(s Interface) bool
 	IsSuperset(s Interface) bool
 	CopyOset() Interface
-	Subset(i, j int) (Interface, error)
+	Subset(i, j int) Interface
 	Set() set.Interface
 	CopySet() set.Interface
 	Arr() array.Interface

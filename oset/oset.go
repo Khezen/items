@@ -26,7 +26,7 @@ func New(items ...interface{}) Interface {
 	return s
 }
 
-func (s *oset) Get(i int) (interface{}, error) {
+func (s *oset) Get(i int) interface{} {
 	return s.a.Get(i)
 }
 
@@ -39,19 +39,15 @@ func (s *oset) Add(items ...interface{}) {
 	}
 }
 
-func (s *oset) Insert(i int, items ...interface{}) error {
+func (s *oset) Insert(i int, items ...interface{}) {
 	toInsert := make([]interface{}, 0, len(items))
 	for _, item := range items {
 		if !s.Has(item) {
 			toInsert = append(toInsert, item)
 		}
 	}
-	err := s.a.Insert(i, toInsert...)
-	if err != nil {
-		return err
-	}
+	s.a.Insert(i, toInsert...)
 	s.s.Add(toInsert...)
-	return nil
 }
 
 func (s *oset) Remove(items ...interface{}) {
@@ -59,13 +55,10 @@ func (s *oset) Remove(items ...interface{}) {
 	s.s.Remove(items...)
 }
 
-func (s *oset) RemoveAt(i int) (interface{}, error) {
-	item, err := s.a.RemoveAt(i)
-	if err != nil {
-		return nil, err
-	}
+func (s *oset) RemoveAt(i int) interface{} {
+	item := s.a.RemoveAt(i)
 	s.s.Remove(item)
-	return item, nil
+	return item
 }
 
 func (s *oset) Replace(item, substitute interface{}) {
@@ -73,13 +66,10 @@ func (s *oset) Replace(item, substitute interface{}) {
 	s.s.Replace(item, substitute)
 }
 
-func (s *oset) ReplaceAt(i int, substitute interface{}) (interface{}, error) {
-	item, err := s.a.ReplaceAt(i, substitute)
-	if err != nil {
-		return nil, err
-	}
+func (s *oset) ReplaceAt(i int, substitute interface{}) interface{} {
+	item := s.a.ReplaceAt(i, substitute)
 	s.s.Replace(item, substitute)
-	return item, nil
+	return item
 }
 
 func (s *oset) IndexOf(item interface{}) (int, error) {
@@ -186,17 +176,14 @@ func (s *oset) Retain(t collection.Interface) {
 	s.a.Retain(t)
 }
 
-func (s *oset) SubArray(i, j int) (array.Interface, error) {
+func (s *oset) SubArray(i, j int) array.Interface {
 	return s.a.SubArray(i, j)
 }
 
-func (s *oset) Subset(i, j int) (Interface, error) {
-	arr, err := s.SubArray(i, j)
-	if err != nil {
-		return nil, err
-	}
+func (s *oset) Subset(i, j int) Interface {
+	arr := s.SubArray(i, j)
 	sub := New(arr.Slice()...)
-	return sub, nil
+	return sub
 }
 
 func (s *oset) String() string {

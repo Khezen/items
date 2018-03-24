@@ -16,21 +16,15 @@ func testErr(err error, expectErr bool, t *testing.T) {
 
 func TestGet(t *testing.T) {
 	cases := []struct {
-		oset      Interface
-		i         int
-		expected  interface{}
-		expectErr bool
+		oset     Interface
+		i        int
+		expected interface{}
 	}{
-		{New(1, 7, -5), 2, -5, false},
-		{New(1, 7, -5), -1, nil, true},
-		{New(1, 7, -5), 1000, nil, true},
-		{NewSync(1, 7, -5), 2, -5, false},
-		{NewSync(1, 7, -5), -1, nil, true},
-		{NewSync(1, 7, -5), 1000, nil, true},
+		{New(1, 7, -5), 2, -5},
+		{NewSync(1, 7, -5), 2, -5},
 	}
 	for _, c := range cases {
-		item, err := c.oset.Get(c.i)
-		testErr(err, c.expectErr, t)
+		item := c.oset.Get(c.i)
 		if item != c.expected {
 			t.Errorf("Expected %v. Got %v.", c.expected, item)
 		}
@@ -64,18 +58,12 @@ func TestInsert(t *testing.T) {
 	cases := []struct {
 		oset, toBeInserted, expected Interface
 		i                            int
-		expectErr                    bool
 	}{
-		{New(1, 4, -8), New(42, -1), New(1, 4, 42, -1, -8), 2, false},
-		{New(1, 4, -8), New(42, -1), New(1, 4, -8), -1, true},
-		{New(1, 4, -8), New(42, -1), New(1, 4, -8), 42, true},
-		{NewSync(1, 4, -8), New(42, -1), NewSync(1, 4, 42, -1, -8), 2, false},
-		{NewSync(1, 4, -8), New(42, -1), NewSync(1, 4, -8), -1, true},
-		{NewSync(1, 4, -8), New(42, -1), NewSync(1, 4, -8), 42, true},
+		{New(1, 4, -8), New(42, -1), New(1, 4, 42, -1, -8), 2},
+		{NewSync(1, 4, -8), New(42, -1), NewSync(1, 4, 42, -1, -8), 2},
 	}
 	for _, c := range cases {
-		err := c.oset.Insert(c.i, c.toBeInserted.Slice()...)
-		testErr(err, c.expectErr, t)
+		c.oset.Insert(c.i, c.toBeInserted.Slice()...)
 		if !c.oset.IsEqual(c.expected) {
 			t.Errorf("Expected %v. Got %v", c.expected.Slice(), c.oset.Slice())
 		}
@@ -110,18 +98,12 @@ func TestRemoveAt(t *testing.T) {
 		oset, expected Interface
 		i              int
 		removed        interface{}
-		expectErr      bool
 	}{
-		{New(1, 4, -8), New(4, -8), 0, 1, false},
-		{New(1, 4, -8), New(1, 4, -8), -1, nil, true},
-		{New(1, 4, -8), New(1, 4, -8), 42, nil, true},
-		{NewSync(1, 4, -8), New(4, -8), 0, 1, false},
-		{NewSync(1, 4, -8), New(1, 4, -8), -1, nil, true},
-		{NewSync(1, 4, -8), New(1, 4, -8), 42, nil, true},
+		{New(1, 4, -8), New(4, -8), 0, 1},
+		{NewSync(1, 4, -8), New(4, -8), 0, 1},
 	}
 	for _, c := range cases {
-		removed, err := c.oset.RemoveAt(c.i)
-		testErr(err, c.expectErr, t)
+		removed := c.oset.RemoveAt(c.i)
 		if removed != c.removed {
 			t.Errorf("Expected %v. Got %v.", c.removed, removed)
 		}
@@ -156,9 +138,7 @@ func TestReplaceAt(t *testing.T) {
 		substitute     interface{}
 	}{
 		{New(1, 4, -8), New(1, 42, -8), 1, 42},
-		{New(1, 4, -8), New(1, 4, -8), 1000, 42},
 		{NewSync(1, 4, -8), NewSync(1, 42, -8), 1, 42},
-		{NewSync(1, 4, -8), NewSync(1, 4, -8), 1000, 42},
 	}
 	for _, c := range cases {
 		c.oset.ReplaceAt(c.i, c.substitute)
@@ -194,31 +174,17 @@ func TestSubArray(t *testing.T) {
 	cases := []struct {
 		oset, expected Interface
 		i, j           int
-		expectErr      bool
 	}{
-		{New(1, 42, -8, 12), New(42, -8), 1, 2, false},
-		{New(1, 42, -8, 12), nil, -1, 2, true},
-		{New(1, 42, -8, 12), nil, 1000, 2, true},
-		{New(1, 42, -8, 12), nil, 1, -2, true},
-		{New(1, 42, -8, 12), nil, 1, 1000, true},
-		{New(1, 42, -8, 12), nil, 2, 1, true},
-		{NewSync(1, 42, -8, 12), NewSync(42, -8), 1, 2, false},
-		{NewSync(1, 42, -8, 12), nil, -1, 2, true},
-		{NewSync(1, 42, -8, 12), nil, 1000, 2, true},
-		{NewSync(1, 42, -8, 12), nil, 1, -2, true},
-		{NewSync(1, 42, -8, 12), nil, 1, 1000, true},
-		{NewSync(1, 42, -8, 12), nil, 2, 1, true},
+		{New(1, 42, -8, 12), New(42, -8), 1, 2},
+		{NewSync(1, 42, -8, 12), NewSync(42, -8), 1, 2},
 	}
 	for _, c := range cases {
-		arr, err := c.oset.SubArray(c.i, c.j)
-		testErr(err, c.expectErr, t)
-		if !c.expectErr {
-			if !arr.IsEqual(c.expected) {
-				t.Errorf("Expected %v. Got %v.", c.expected.Slice(), arr.Slice())
-			}
-			if arr.IsEqual(c.oset) {
-				t.Errorf("c.oset should not be modified")
-			}
+		arr := c.oset.SubArray(c.i, c.j)
+		if !arr.IsEqual(c.expected) {
+			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), arr.Slice())
+		}
+		if arr.IsEqual(c.oset) {
+			t.Errorf("c.oset should not be modified")
 		}
 	}
 }
@@ -227,20 +193,11 @@ func TestSwap(t *testing.T) {
 	cases := []struct {
 		oset, expected Interface
 		i, j           int
-		expectErr      bool
 	}{
-		{New(1, 42, -8), New(42, 1, -8), 0, 1, false},
-		{New(1, 42, -8), New(42, 1, -8), 1, 0, false},
-		{New(1, 42, -8), New(1, 42, -8), -1, 0, true},
-		{New(1, 42, -8), New(1, 42, -8), 1000, 0, true},
-		{New(1, 42, -8), New(1, 42, -8), 1, 1000, true},
-		{New(1, 42, -8), New(1, 42, -8), 1, -1, true},
-		{NewSync(1, 42, -8), NewSync(42, 1, -8), 0, 1, false},
-		{NewSync(1, 42, -8), NewSync(42, 1, -8), 1, 0, false},
-		{NewSync(1, 42, -8), NewSync(1, 42, -8), -1, 0, true},
-		{NewSync(1, 42, -8), NewSync(1, 42, -8), 1000, 0, true},
-		{NewSync(1, 42, -8), NewSync(1, 42, -8), 1, 1000, true},
-		{NewSync(1, 42, -8), NewSync(1, 42, -8), 1, -1, true},
+		{New(1, 42, -8), New(42, 1, -8), 0, 1},
+		{New(1, 42, -8), New(42, 1, -8), 1, 0},
+		{NewSync(1, 42, -8), NewSync(42, 1, -8), 0, 1},
+		{NewSync(1, 42, -8), NewSync(42, 1, -8), 1, 0},
 	}
 	for _, c := range cases {
 		c.oset.Swap(c.i, c.j)
@@ -493,31 +450,17 @@ func TestSubset(t *testing.T) {
 	cases := []struct {
 		s, expected Interface
 		i, j        int
-		expectErr   bool
 	}{
-		{New(1, 42, -8, 12), New(42, -8), 1, 2, false},
-		{New(1, 42, -8, 12), nil, -1, 2, true},
-		{New(1, 42, -8, 12), nil, 1000, 2, true},
-		{New(1, 42, -8, 12), nil, 1, -2, true},
-		{New(1, 42, -8, 12), nil, 1, 1000, true},
-		{New(1, 42, -8, 12), nil, 2, 1, true},
-		{NewSync(1, 42, -8, 12), NewSync(42, -8), 1, 2, false},
-		{NewSync(1, 42, -8, 12), nil, -1, 2, true},
-		{NewSync(1, 42, -8, 12), nil, 1000, 2, true},
-		{NewSync(1, 42, -8, 12), nil, 1, -2, true},
-		{NewSync(1, 42, -8, 12), nil, 1, 1000, true},
-		{NewSync(1, 42, -8, 12), nil, 2, 1, true},
+		{New(1, 42, -8, 12), New(42, -8), 1, 2},
+		{NewSync(1, 42, -8, 12), NewSync(42, -8), 1, 2},
 	}
 	for _, c := range cases {
-		s, err := c.s.Subset(c.i, c.j)
-		testErr(err, c.expectErr, t)
-		if !c.expectErr {
-			if !s.IsEqual(c.expected) {
-				t.Errorf("Expected %v. Got %v.", c.expected.Slice(), s.Slice())
-			}
-			if s.IsEqual(c.s) {
-				t.Errorf("c.array should not be modified")
-			}
+		s := c.s.Subset(c.i, c.j)
+		if !s.IsEqual(c.expected) {
+			t.Errorf("Expected %v. Got %v.", c.expected.Slice(), s.Slice())
+		}
+		if s.IsEqual(c.s) {
+			t.Errorf("c.array should not be modified")
 		}
 	}
 }

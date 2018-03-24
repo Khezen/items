@@ -21,7 +21,7 @@ func NewSync(items ...interface{}) Interface {
 	}
 }
 
-func (s *osetSync) Get(i int) (interface{}, error) {
+func (s *osetSync) Get(i int) interface{} {
 	s.l.RLock()
 	defer s.l.RUnlock()
 	return s.oset.Get(i)
@@ -37,10 +37,10 @@ func (s *osetSync) Add(items ...interface{}) {
 	}
 }
 
-func (s *osetSync) Insert(i int, items ...interface{}) error {
+func (s *osetSync) Insert(i int, items ...interface{}) {
 	s.l.Lock()
 	defer s.l.Unlock()
-	return s.oset.Insert(i, items...)
+	s.oset.Insert(i, items...)
 }
 
 // Remove deletes the specified items from the oset.  The underlying osetSync s is
@@ -53,7 +53,7 @@ func (s *osetSync) Remove(items ...interface{}) {
 	}
 }
 
-func (s *osetSync) RemoveAt(i int) (interface{}, error) {
+func (s *osetSync) RemoveAt(i int) interface{} {
 	s.l.Lock()
 	defer s.l.Unlock()
 	return s.oset.RemoveAt(i)
@@ -65,7 +65,7 @@ func (s *osetSync) Replace(toBeReplaced, substitute interface{}) {
 	s.oset.Replace(toBeReplaced, substitute)
 }
 
-func (s *osetSync) ReplaceAt(i int, substitute interface{}) (interface{}, error) {
+func (s *osetSync) ReplaceAt(i int, substitute interface{}) interface{} {
 	s.l.Lock()
 	defer s.l.Unlock()
 	return s.oset.ReplaceAt(i, substitute)
@@ -168,27 +168,21 @@ func (s *osetSync) Retain(t collection.Interface) {
 	s.oset.Retain(t)
 }
 
-func (s *osetSync) SubArray(i, j int) (array.Interface, error) {
+func (s *osetSync) SubArray(i, j int) array.Interface {
 	s.l.RLock()
 	defer s.l.RUnlock()
-	arr, err := s.oset.SubArray(i, j)
-	if err != nil {
-		return nil, err
-	}
-	return array.NewSync(arr.Slice()...), nil
+	arr := s.oset.SubArray(i, j)
+	return array.NewSync(arr.Slice()...)
 }
 
-func (s *osetSync) Subset(i, j int) (Interface, error) {
+func (s *osetSync) Subset(i, j int) Interface {
 	s.l.RLock()
 	defer s.l.RUnlock()
-	os, err := s.oset.Subset(i, j)
-	if err != nil {
-		return nil, err
-	}
+	os := s.oset.Subset(i, j)
 	return &osetSync{
 		*os.(*oset),
 		sync.RWMutex{},
-	}, nil
+	}
 }
 
 func (s *osetSync) String() string {

@@ -20,7 +20,7 @@ func NewSync(items ...interface{}) Interface {
 	}
 }
 
-func (a *arraySync) Get(i int) (interface{}, error) {
+func (a *arraySync) Get(i int) interface{} {
 	a.l.RLock()
 	defer a.l.RUnlock()
 	return a.array.Get(i)
@@ -36,10 +36,10 @@ func (a *arraySync) Add(items ...interface{}) {
 	}
 }
 
-func (a *arraySync) Insert(i int, items ...interface{}) error {
+func (a *arraySync) Insert(i int, items ...interface{}) {
 	a.l.Lock()
 	defer a.l.Unlock()
-	return a.array.Insert(i, items...)
+	a.array.Insert(i, items...)
 }
 
 // Remove deletes the specified items from the array.  The underlying arraySync s is
@@ -52,7 +52,7 @@ func (a *arraySync) Remove(items ...interface{}) {
 	}
 }
 
-func (a *arraySync) RemoveAt(i int) (interface{}, error) {
+func (a *arraySync) RemoveAt(i int) interface{} {
 	a.l.Lock()
 	defer a.l.Unlock()
 	return a.array.RemoveAt(i)
@@ -64,7 +64,7 @@ func (a *arraySync) Replace(toBeReplaced, substitute interface{}) {
 	a.array.Replace(toBeReplaced, substitute)
 }
 
-func (a *arraySync) ReplaceAt(i int, substitute interface{}) (interface{}, error) {
+func (a *arraySync) ReplaceAt(i int, substitute interface{}) interface{} {
 	a.l.Lock()
 	defer a.l.Unlock()
 	return a.array.ReplaceAt(i, substitute)
@@ -176,17 +176,14 @@ func (a *arraySync) CopyArr() Interface {
 	return NewSync(a.s...)
 }
 
-func (a *arraySync) SubArray(i, j int) (Interface, error) {
+func (a *arraySync) SubArray(i, j int) Interface {
 	a.l.RLock()
 	defer a.l.RUnlock()
-	arr, err := a.array.SubArray(i, j)
-	if err != nil {
-		return nil, err
-	}
+	arr := a.array.SubArray(i, j)
 	return &arraySync{
 		*arr.(*array),
 		sync.RWMutex{},
-	}, nil
+	}
 }
 
 func (a *arraySync) CopyCollection() collection.Interface {
